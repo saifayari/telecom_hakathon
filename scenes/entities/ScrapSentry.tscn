@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://sentry001"]
+
+[ext_resource type="Script" path="res://scripts/entities/ScrapSentry.gd" id="1_scr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/turrets/scrap_sentry.png" id="2_tex"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sentry_shoot.wav" id="3_sfx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 14.0
+
+[node name="ScrapSentry" type="StaticBody2D" groups=["Turrets"]]
+collision_layer = 16
+collision_mask = 4
+script = ExtResource("1_scr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")
+
+[node name="BarrelPivot" type="Node2D" parent="."]
+
+[node name="AudioShoot" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_sfx")
+volume_db = -4.0

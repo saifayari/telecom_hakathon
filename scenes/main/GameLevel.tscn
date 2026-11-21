@@ -1,0 +1,52 @@
+[gd_scene load_steps=10 format=3 uid="uid://gamelevel001"]
+
+[ext_resource type="Script" path="res://scripts/main/GameLevel.gd" id="1_ku8ts"]
+[ext_resource type="PackedScene" path="res://scenes/environment/NatureArena.tscn" id="2_josd4"]
+[ext_resource type="PackedScene" path="res://scenes/environment/TelecomTowerCore.tscn" id="3_core"]
+[ext_resource type="PackedScene" path="res://scenes/entities/AegisDrone.tscn" id="4_drone"]
+[ext_resource type="PackedScene" path="res://scenes/entities/SamiPlayer.tscn" id="5_lbvwp"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="6_hud"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/ost_day_ambient.ogg" id="7_day"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/ost_night_battle.ogg" id="8_night"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/dusk_siren.wav" id="9_siren"]
+
+[node name="GameLevel" type="Node2D"]
+script = ExtResource("1_ku8ts")
+
+[node name="Arena" parent="." instance=ExtResource("2_josd4")]
+
+[node name="TelecomTowerCore" parent="." instance=ExtResource("3_core")]
+position = Vector2(1024, 768)
+
+[node name="AegisDrone" parent="." instance=ExtResource("4_drone")]
+position = Vector2(1150, 710)
+
+[node name="SamiPlayer" parent="." instance=ExtResource("5_lbvwp")]
+position = Vector2(1024, 830)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1024, 830)
+limit_left = 0
+limit_top = 0
+limit_right = 2048
+limit_bottom = 1536
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("6_hud")]
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="DayMusic" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("7_day")
+volume_db = -6.0
+
+[node name="NightMusic" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("8_night")
+volume_db = -6.0
+
+[node name="DuskSiren" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("9_siren")
+volume_db = 2.0

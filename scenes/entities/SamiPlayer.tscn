@@ -1,0 +1,127 @@
+[gd_scene load_steps=16 format=3 uid="uid://cx6i8v1sami"]
+
+[ext_resource type="Script" path="res://scripts/entities/SamiPlayer.gd" id="1_sami"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_idle.png" id="2_idle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_shoot.png" id="3_shoot"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_walk_0.png" id="4_w0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_walk_1.png" id="5_w1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_walk_2.png" id="6_w2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_walk_3.png" id="7_w3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_walk_4.png" id="8_w4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_walk_5.png" id="9_w5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_weld.png" id="10_weld"]
+[ext_resource type="Texture2D" path="res://assets/sprites/weapons/gun_rifle.png" id="11_gun"]
+[ext_resource type="Texture2D" path="res://assets/sprites/weapons/muzzle_flash.png" id="12_flash"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weld_resonate.wav" id="13_weld_sfx"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sentry_shoot.wav" id="14_shoot_sfx"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sami"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_idle")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_shoot")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_w0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_w1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_w2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_w3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_w4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_w5")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_weld")
+}],
+"loop": true,
+"name": &"weld",
+"speed": 6.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 7.0
+height = 22.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 38.0
+
+[node name="SamiPlayer" type="CharacterBody2D" groups=["Player"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_sami")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -6)
+scale = Vector2(0.42, 0.42)
+sprite_frames = SubResource("SpriteFrames_sami")
+animation = &"idle"
+
+[node name="WeaponPivot" type="Node2D" parent="."]
+position = Vector2(0, -4)
+
+[node name="GunSprite" type="Sprite2D" parent="WeaponPivot"]
+position = Vector2(12, 0)
+scale = Vector2(0.28, 0.28)
+texture = ExtResource("11_gun")
+
+[node name="MuzzleFlash" type="Sprite2D" parent="WeaponPivot"]
+position = Vector2(24, 0)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("12_flash")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0)
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_interact")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -14.0
+offset_top = -24.0
+offset_right = 14.0
+offset_bottom = -20.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="WeldAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_weld_sfx")
+
+[node name="ShootAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_shoot_sfx")
+volume_db = -2.0
+
+[connection signal="area_entered" from="InteractionArea" to="." method="_on_interaction_area_entered"]
+[connection signal="area_exited" from="InteractionArea" to="." method="_on_interaction_area_exited"]

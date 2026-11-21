@@ -1,0 +1,6 @@
+# Godot 4 engine .gitignore
+.godot/
+*.translation
+*.tmp
+*.log
+.obsidian/

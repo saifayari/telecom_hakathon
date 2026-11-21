@@ -1,0 +1,247 @@
+[gd_scene load_steps=10 format=3 uid="uid://hud001"]
+
+[ext_resource type="Script" path="res://scripts/ui/HUD.gd" id="1_scr"]
+[ext_resource type="PackedScene" path="res://scenes/ui/CraftingModal.tscn" id="2_craft"]
+[ext_resource type="PackedScene" path="res://scenes/ui/AegisBarterModal.tscn" id="3_aegis"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/icon_scrap.png" id="4_scrap"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/icon_pure_alloy.png" id="5_alloy"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/icon_lithium_battery.png" id="6_bat"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/icon_nano_core.png" id="7_core"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/portrait_sami.png" id="8_portrait"]
+[ext_resource type="PackedScene" path="res://scenes/ui/MobileControls.tscn" id="9_mobile"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_top"]
+bg_color = Color(0.06, 0.07, 0.09, 0.88)
+border_width_bottom = 2
+border_color = Color(0.2, 0.25, 0.3, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
+bg_color = Color(0.05, 0.08, 0.12, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.7, 0.9, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_scr")
+
+[node name="TopBar" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_top")
+
+[node name="HBox" type="HBoxContainer" parent="TopBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_right = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="PhaseLabel" type="Label" parent="TopBar/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+text = "DAY 1 - PURIFY SCRAP"
+
+[node name="TimerLabel" type="Label" parent="TopBar/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+text = "01:00"
+
+[node name="VSeparator1" type="VSeparator" parent="TopBar/HBox"]
+layout_mode = 2
+
+[node name="SignalLabel" type="Label" parent="TopBar/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "SIGNAL:"
+
+[node name="SignalBar" type="ProgressBar" parent="TopBar/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 14)
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+show_percentage = false
+
+[node name="CoreLabel" type="Label" parent="TopBar/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "CORE:"
+
+[node name="CoreBar" type="ProgressBar" parent="TopBar/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 14)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1000.0
+value = 1000.0
+show_percentage = false
+
+[node name="VSeparator2" type="VSeparator" parent="TopBar/HBox"]
+layout_mode = 2
+
+[node name="ResourcesHBox" type="HBoxContainer" parent="TopBar/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="IconScrap" type="TextureRect" parent="TopBar/HBox/ResourcesHBox"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = ExtResource("4_scrap")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ScrapVal" type="Label" parent="TopBar/HBox/ResourcesHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "50"
+
+[node name="Spacer1" type="Control" parent="TopBar/HBox/ResourcesHBox"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="IconAlloy" type="TextureRect" parent="TopBar/HBox/ResourcesHBox"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = ExtResource("5_alloy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AlloyVal" type="Label" parent="TopBar/HBox/ResourcesHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="Spacer2" type="Control" parent="TopBar/HBox/ResourcesHBox"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="IconBattery" type="TextureRect" parent="TopBar/HBox/ResourcesHBox"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = ExtResource("6_bat")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BatteryVal" type="Label" parent="TopBar/HBox/ResourcesHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1"
+
+[node name="Spacer3" type="Control" parent="TopBar/HBox/ResourcesHBox"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="IconCore" type="TextureRect" parent="TopBar/HBox/ResourcesHBox"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = ExtResource("7_core")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoreVal" type="Label" parent="TopBar/HBox/ResourcesHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="BottomHints" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -22.0
+offset_left = 12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.65, 0.7, 0.75, 0.8)
+theme_override_font_sizes/font_size = 11
+text = "[WASD] Move | [Click] Shoot | [Hold E] Purify Scrap | [F] AEGIS Barter | [TAB] Crafting | [N] Day/Night"
+
+[node name="DialogueBox" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -92.0
+offset_right = 220.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
+
+[node name="HBox" type="HBoxContainer" parent="DialogueBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PortraitRect" type="TextureRect" parent="DialogueBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("8_portrait")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="DialogueBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpeakerLabel" type="Label" parent="DialogueBox/HBox/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "SPEAKER"
+
+[node name="DialogueText" type="Label" parent="DialogueBox/HBox/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Transmission incoming..."
+autowrap_mode = 2
+
+[node name="MobileControls" parent="." instance=ExtResource("9_mobile")]
+
+[node name="CraftingModal" parent="." instance=ExtResource("2_craft")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="AegisModal" parent="." instance=ExtResource("3_aegis")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1

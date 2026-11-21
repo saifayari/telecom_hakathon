@@ -1,0 +1,173 @@
+[gd_scene load_steps=4 format=3 uid="uid://lobby_scrapbound01"]
+
+[ext_resource type="Script" path="res://scripts/scrapbound/Lobby.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.06, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.65, 0.85, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.12, 0.45, 0.25, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.07, 0.09, 1)
+
+[node name="MainPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -150.0
+offset_right = 210.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 16.0
+offset_right = -20.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="MainPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "SCRAPBOUND — ONLINE ARENA"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 9
+text = "2-Player Competitive Online Tower Defense"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MainPanel/VBox"]
+layout_mode = 2
+
+[node name="HBoxConfig" type="HBoxContainer" parent="MainPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VBoxIP" type="VBoxContainer" parent="MainPanel/VBox/HBoxConfig"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LblIP" type="Label" parent="MainPanel/VBox/HBoxConfig/VBoxIP"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Host IP Address:"
+
+[node name="IPEdit" type="LineEdit" parent="MainPanel/VBox/HBoxConfig/VBoxIP"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "127.0.0.1"
+placeholder_text = "e.g. 192.168.1.50"
+
+[node name="VBoxPort" type="VBoxContainer" parent="MainPanel/VBox/HBoxConfig"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 0)
+
+[node name="LblPort" type="Label" parent="MainPanel/VBox/HBoxConfig/VBoxPort"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Port:"
+
+[node name="PortEdit" type="LineEdit" parent="MainPanel/VBox/HBoxConfig/VBoxPort"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "7777"
+
+[node name="HBoxButtons" type="HBoxContainer" parent="MainPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="BtnHost" type="Button" parent="MainPanel/VBox/HBoxButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 28)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "HOST GAME (P1)"
+
+[node name="BtnJoin" type="Button" parent="MainPanel/VBox/HBoxButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 28)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "JOIN GAME (P2)"
+
+[node name="BtnDisconnect" type="Button" parent="MainPanel/VBox/HBoxButtons"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(90, 28)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "DISCONNECT"
+
+[node name="StatusLabel" type="Label" parent="MainPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+text = "Select HOST or JOIN to start online match."
+horizontal_alignment = 1
+
+[node name="PlayerListLabel" type="Label" parent="MainPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 9
+text = "Connected Players: 0 / 2"
+horizontal_alignment = 1
+
+[node name="BtnStart" type="Button" parent="MainPanel/VBox"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(140, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_font_sizes/font_size = 11
+text = "START MATCH"

@@ -1,0 +1,95 @@
+[gd_scene load_steps=15 format=3 uid="uid://telecomcore001"]
+
+[ext_resource type="Script" path="res://scripts/environment/TelecomTowerCore.gd" id="1_scr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/environment/telecom_tower_day.png" id="2_day"]
+[ext_resource type="Texture2D" path="res://assets/sprites/weapons/shockwave_ring.png" id="3_ring"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/core_alarm.wav" id="4_alarm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/power_generator.png" id="5_gen"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/workbench_electronics.png" id="6_elec"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/workbench_mechanical.png" id="7_mech"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/cable_spool.png" id="8_spool"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/telecom_junction_box.png" id="9_box"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/tower_terminal.png" id="10_term"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/barricade_spikes.png" id="11_barricade"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/storage_crate.png" id="12_crate"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_base"]
+size = Vector2(72, 40)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_core"]
+radius = 42.0
+
+[node name="TelecomTowerCore" type="StaticBody2D" groups=["CoreTower"]]
+collision_layer = 129
+collision_mask = 6
+script = ExtResource("1_scr")
+
+[node name="FrequencyRing" type="Sprite2D" parent="."]
+modulate = Color(0.1, 0.8, 1, 0.6)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("3_ring")
+
+[node name="TowerSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -70)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_day")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_base")
+
+[node name="Props" type="Node2D" parent="."]
+
+[node name="Generator" type="Sprite2D" parent="Props"]
+position = Vector2(-75, 15)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("5_gen")
+
+[node name="ElecBench" type="Sprite2D" parent="Props"]
+position = Vector2(75, -20)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("6_elec")
+
+[node name="MechBench" type="Sprite2D" parent="Props"]
+position = Vector2(80, 25)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("7_mech")
+
+[node name="Terminal" type="Sprite2D" parent="Props"]
+position = Vector2(-55, -30)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_term")
+
+[node name="CableSpool" type="Sprite2D" parent="Props"]
+position = Vector2(-95, -15)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_spool")
+
+[node name="JunctionBox" type="Sprite2D" parent="Props"]
+position = Vector2(40, -45)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("9_box")
+
+[node name="BarricadeWest" type="Sprite2D" parent="Props"]
+position = Vector2(-125, 30)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("11_barricade")
+
+[node name="BarricadeEast" type="Sprite2D" parent="Props"]
+position = Vector2(125, 30)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("11_barricade")
+
+[node name="StorageCrate" type="Sprite2D" parent="Props"]
+position = Vector2(-80, -40)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_crate")
+
+[node name="AudioAlarm" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_alarm")
+volume_db = 4.0
+
+[node name="BeaconLight" type="PointLight2D" parent="."]
+position = Vector2(0, -145)
+color = Color(1, 0.1, 0.1, 1)
+energy = 1.8

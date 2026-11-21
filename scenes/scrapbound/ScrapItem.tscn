@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://scrap_item01"]
+
+[ext_resource type="Script" path="res://scripts/scrapbound/ScrapItem.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/icon_scrap.png" id="2_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 16.0
+
+[node name="ScrapItem" type="Area2D" groups=["Collectibles"]]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -24.0
+offset_right = 30.0
+offset_bottom = -10.0
+theme_override_font_sizes/font_size = 9
+text = "SCRAP"
+horizontal_alignment = 1

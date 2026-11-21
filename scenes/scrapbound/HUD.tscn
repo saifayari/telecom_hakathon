@@ -1,0 +1,285 @@
+[gd_scene load_steps=5 format=3 uid="uid://hud_scrapbound01"]
+
+[ext_resource type="Script" path="res://scripts/scrapbound/HUD.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_top"]
+bg_color = Color(0.06, 0.08, 0.12, 0.95)
+border_width_bottom = 2
+border_color = Color(0.2, 0.35, 0.5, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+bg_color = Color(0.05, 0.07, 0.1, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.7, 0.9, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp"]
+bg_color = Color(0.2, 0.85, 0.4, 1)
+
+[node name="ScrapboundHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="TopPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_top")
+
+[node name="HBox" type="HBoxContainer" parent="TopPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 4.0
+offset_right = -12.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="MyBox" type="VBoxContainer" parent="TopPanel/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxHeader" type="HBoxContainer" parent="TopPanel/HBox/MyBox"]
+layout_mode = 2
+
+[node name="MyTitleLabel" type="Label" parent="TopPanel/HBox/MyBox/HBoxHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "YOU (PLAYER 1 - BLUE)"
+
+[node name="MyScoreLabel" type="Label" parent="TopPanel/HBox/MyBox/HBoxHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 9
+text = "SCORE: 0 (Kills: 0)"
+horizontal_alignment = 2
+
+[node name="HBoxBars" type="HBoxContainer" parent="TopPanel/HBox/MyBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LblHP" type="Label" parent="TopPanel/HBox/MyBox/HBoxBars"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "HP:"
+
+[node name="MyHealthBar" type="ProgressBar" parent="TopPanel/HBox/MyBox/HBoxBars"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp")
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="MyHealthVal" type="Label" parent="TopPanel/HBox/MyBox/HBoxBars"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "100 HP"
+
+[node name="LblTower" type="Label" parent="TopPanel/HBox/MyBox/HBoxBars"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "TOWER:"
+
+[node name="MyTowerBar" type="ProgressBar" parent="TopPanel/HBox/MyBox/HBoxBars"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp")
+max_value = 1000.0
+value = 1000.0
+show_percentage = false
+
+[node name="MyTowerVal" type="Label" parent="TopPanel/HBox/MyBox/HBoxBars"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "1000/1000"
+
+[node name="HBoxInv" type="HBoxContainer" parent="TopPanel/HBox/MyBox"]
+layout_mode = 2
+
+[node name="MyWeaponLabel" type="Label" parent="TopPanel/HBox/MyBox/HBoxInv"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 8
+text = "WEAPON: Basic"
+
+[node name="MyScrapLabel" type="Label" parent="TopPanel/HBox/MyBox/HBoxInv"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 8
+text = "SCRAP: 0  |  BATTERY: 0"
+horizontal_alignment = 1
+
+[node name="MyMatsLabel" type="Label" parent="TopPanel/HBox/MyBox/HBoxInv"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 8
+text = "CRAFT: [A:0 B:0 C:0 D:0]   BUILD: [Wood:0 Plas:0 Iron:0]"
+horizontal_alignment = 2
+
+[node name="CenterBox" type="VBoxContainer" parent="TopPanel/HBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="MatchTitle" type="Label" parent="TopPanel/HBox/CenterBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.75, 0.2, 1)
+theme_override_font_sizes/font_size = 9
+text = "SCRAPBOUND"
+horizontal_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="TopPanel/HBox/CenterBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "02:00"
+horizontal_alignment = 1
+
+[node name="OppBox" type="VBoxContainer" parent="TopPanel/HBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(170, 0)
+alignment = 1
+
+[node name="OppTitleLabel" type="Label" parent="TopPanel/HBox/OppBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+theme_override_font_sizes/font_size = 9
+text = "OPPONENT (PLAYER 2)"
+horizontal_alignment = 2
+
+[node name="OppScoreLabel" type="Label" parent="TopPanel/HBox/OppBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "SCORE: 0"
+horizontal_alignment = 2
+
+[node name="HBoxOppTower" type="HBoxContainer" parent="TopPanel/HBox/OppBox"]
+layout_mode = 2
+
+[node name="LblOppTower" type="Label" parent="TopPanel/HBox/OppBox/HBoxOppTower"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "TOWER:"
+
+[node name="OppTowerBar" type="ProgressBar" parent="TopPanel/HBox/OppBox/HBoxOppTower"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp")
+max_value = 1000.0
+value = 1000.0
+show_percentage = false
+
+[node name="OppTowerVal" type="Label" parent="TopPanel/HBox/OppBox/HBoxOppTower"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "1000/1000"
+
+[node name="BottomHints" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -22.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HintLabel" type="Label" parent="BottomHints"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 8
+text = "CONTROLS: [W,A,S,D] / [ARROWS] Move  |  [SPACE] Shoot  |  [E] Recycle (at machine) / Quick Craft (A+B or A+C)  |  [Q] Build Barrier (Costs 2 Materials)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResultsPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -120.0
+offset_right = 190.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="VBox" type="VBoxContainer" parent="ResultsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="WinnerLabel" type="Label" parent="ResultsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "VICTORY!"
+horizontal_alignment = 1
+
+[node name="ResultsDetail" type="Label" parent="ResultsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 9
+text = "Details..."
+
+[node name="BtnRematch" type="Button" parent="ResultsPanel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 26)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 11
+text = "RETURN TO LOBBY"
