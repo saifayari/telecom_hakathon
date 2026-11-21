@@ -48,10 +48,22 @@ offset_right = 1055.0
 offset_bottom = 575.0
 color = Color(0.3, 0.18, 0.1, 0.25)
 
-[node name="CenterDivider" type="Line2D" parent="."]
-points = PackedVector2Array(540, 25, 540, 575)
+[node name="DividerWall" type="ColorRect" parent="."]
+offset_left = 526.0
+offset_top = 0.0
+offset_right = 554.0
+offset_bottom = 600.0
+color = Color(0.04, 0.05, 0.07, 1)
+
+[node name="DividerBorderLeft" type="Line2D" parent="."]
+points = PackedVector2Array(526, 0, 526, 600)
 width = 2.0
-default_color = Color(0.4, 0.5, 0.6, 0.4)
+default_color = Color(0.25, 0.35, 0.45, 0.9)
+
+[node name="DividerBorderRight" type="Line2D" parent="."]
+points = PackedVector2Array(554, 0, 554, 600)
+width = 2.0
+default_color = Color(0.25, 0.35, 0.45, 0.9)
 
 [node name="ArenaBounds" type="StaticBody2D" parent="." groups=["WorldBounds"]]
 collision_layer = 1
@@ -71,6 +83,10 @@ shape = SubResource("RectangleShape2D_left")
 
 [node name="ColRight" type="CollisionShape2D" parent="ArenaBounds"]
 position = Vector2(1070, 300)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="ColCenter" type="CollisionShape2D" parent="ArenaBounds"]
+position = Vector2(540, 300)
 shape = SubResource("RectangleShape2D_right")
 
 [node name="Tower1" parent="." instance=ExtResource("2_tower")]

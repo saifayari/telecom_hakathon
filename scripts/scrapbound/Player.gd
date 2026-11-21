@@ -69,8 +69,28 @@ func _ready() -> void:
 func setup_network_authority(peer_id: int, assigned_id: int) -> void:
 	player_id = assigned_id
 	set_multiplayer_authority(peer_id)
-	_apply_visual_theme()
 	aim_direction = Vector2.RIGHT if player_id == 1 else Vector2.LEFT
+	
+	if not is_multiplayer_authority():
+		hide_character_from_view()
+	else:
+		show_character_for_local()
+		_apply_visual_theme()
+
+func hide_character_from_view() -> void:
+	visible = false
+	if anim_sprite: anim_sprite.visible = false
+	if weapon_pivot: weapon_pivot.visible = false
+	if health_bar: health_bar.visible = false
+	if name_label: name_label.visible = false
+	if respawn_label: respawn_label.visible = false
+
+func show_character_for_local() -> void:
+	visible = true
+	if anim_sprite: anim_sprite.visible = true
+	if weapon_pivot: weapon_pivot.visible = true
+	if health_bar: health_bar.visible = true
+	if name_label: name_label.visible = true
 
 func _apply_visual_theme() -> void:
 	if not is_inside_tree():
@@ -108,7 +128,10 @@ func _physics_process(delta: float) -> void:
 		var flip_h = anim_sprite.flip_h if anim_sprite else false
 		sync_transform.rpc(global_position, velocity, anim_name, flip_h, aim_direction)
 	else:
-		# Remote puppet: smoothly interpolate towards received network position
+		# Remote puppet: ensure it remains completely invisible to local player
+		if visible:
+			hide_character_from_view()
+		# smoothly interpolate towards received network position
 		if global_position.distance_to(remote_target_pos) > 1.0:
 			global_position = global_position.lerp(remote_target_pos, delta * 20.0)
 
@@ -241,9 +264,12 @@ func sync_death_net(duration: float) -> void:
 	if weapon_pivot: weapon_pivot.visible = false
 	if health_bar: health_bar.visible = false
 	if collision_shape: collision_shape.set_deferred("disabled", true)
-	if respawn_label:
-		respawn_label.visible = true
-		respawn_label.text = "RESPAWN: %ds" % int(ceil(respawn_timer))
+	if not is_multiplayer_authority():
+		hide_character_from_view()
+	else:
+		if respawn_label:
+			respawn_label.visible = true
+			respawn_label.text = "RESPAWN: %ds" % int(ceil(respawn_timer))
 	player_died.emit(player_id, respawn_timer)
 
 func _process_respawn_server(delta: float) -> void:
@@ -279,6 +305,11 @@ func sync_respawn_net(spawn_pos: Vector2) -> void:
 	health = max_health
 	global_position = spawn_pos
 	remote_target_pos = spawn_pos
+	if collision_shape: collision_shape.set_deferred("disabled", false)
+	
+	if not is_multiplayer_authority():
+		hide_character_from_view()
+		return
 	
 	if health_bar:
 		health_bar.value = health
@@ -287,7 +318,6 @@ func sync_respawn_net(spawn_pos: Vector2) -> void:
 		anim_sprite.visible = true
 		anim_sprite.modulate = Color.WHITE
 	if weapon_pivot: weapon_pivot.visible = true
-	if collision_shape: collision_shape.set_deferred("disabled", false)
 	if respawn_label: respawn_label.visible = false
 	
 	player_respawned.emit(player_id)

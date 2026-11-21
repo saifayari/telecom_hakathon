@@ -25,6 +25,9 @@ var barrier_scene = preload("res://scenes/scrapbound/Barrier.tscn")
 @onready var recycler1: ScrapRecycler = $Recycler1
 @onready var recycler2: ScrapRecycler = $Recycler2
 @onready var hud: ScrapboundHUD = $CanvasLayer/ScrapboundHUD
+@onready var camera: Camera2D = $Camera2D
+
+var local_target_player: ScrapboundPlayer = null
 
 func _ready() -> void:
 	match_timer = match_duration
@@ -41,6 +44,23 @@ func _ready() -> void:
 	if p2: p2.setup_network_authority(client_peer_id, 2)
 	
 	var my_local_id = NetworkManager.get_my_player_id()
+	local_target_player = p1 if my_local_id == 1 else p2
+	
+	# Set independent camera view strictly bounded to the player's territory
+	if camera and local_target_player:
+		camera.position = local_target_player.position
+		camera.zoom = Vector2(1.22, 1.22)
+		if my_local_id == 1:
+			camera.limit_left = 10
+			camera.limit_right = 530
+			camera.limit_top = 10
+			camera.limit_bottom = 590
+		else:
+			camera.limit_left = 550
+			camera.limit_right = 1070
+			camera.limit_top = 10
+			camera.limit_bottom = 590
+	
 	if hud:
 		hud.set_local_player(my_local_id)
 		hud.rematch_requested.connect(_on_rematch_pressed)
@@ -54,6 +74,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_match_running:
 		return
+		
+	# Smoothly track local player with the camera
+	if camera and local_target_player and is_instance_valid(local_target_player):
+		camera.position = camera.position.lerp(local_target_player.position, delta * 6.0)
 		
 	# Match timing and monster spawning are strictly server-authoritative
 	if multiplayer.is_server():
@@ -80,16 +104,17 @@ func _spawn_monster_server() -> void:
 	if not multiplayer.is_server():
 		return
 		
-	var spawn_points = [
-		Vector2(randf_range(350, 730), 45),
-		Vector2(randf_range(350, 730), 555),
-		Vector2(randf_range(200, 400), 50),
-		Vector2(randf_range(680, 880), 550),
-		Vector2(540, 45)
-	]
-	var pos = spawn_points[randi() % spawn_points.size()]
+	# Fair dual-lane spawning: spawn for Player 1's side
+	var y1 = 45 if randf() < 0.5 else 555
+	var pos1 = Vector2(randf_range(90, 470), y1)
 	next_entity_id += 1
-	spawn_monster_net.rpc(next_entity_id, pos)
+	spawn_monster_net.rpc(next_entity_id, pos1)
+	
+	# Spawn for Player 2's side
+	var y2 = 45 if randf() < 0.5 else 555
+	var pos2 = Vector2(randf_range(610, 990), y2)
+	next_entity_id += 1
+	spawn_monster_net.rpc(next_entity_id, pos2)
 
 @rpc("call_local", "reliable")
 func spawn_monster_net(m_id: int, pos: Vector2) -> void:
