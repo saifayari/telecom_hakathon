@@ -22,6 +22,21 @@ func _ready() -> void:
 	btn_disconnect.pressed.connect(_on_disconnect_pressed)
 	
 	_reset_ui()
+	
+	var all_args = OS.get_cmdline_args() + OS.get_cmdline_user_args()
+	for a in all_args:
+		if a == "--host" or a == "host":
+			DisplayServer.window_set_title("SCRAPBOUND - PLAYER 1 [HOST]")
+			DisplayServer.window_set_size(Vector2i(630, 520))
+			DisplayServer.window_set_position(Vector2i(20, 60))
+			get_tree().create_timer(0.4).timeout.connect(_on_host_pressed)
+			break
+		elif a == "--join" or a == "join":
+			DisplayServer.window_set_title("SCRAPBOUND - PLAYER 2 [CLIENT]")
+			DisplayServer.window_set_size(Vector2i(630, 520))
+			DisplayServer.window_set_position(Vector2i(665, 60))
+			get_tree().create_timer(0.9).timeout.connect(_on_join_pressed)
+			break
 
 func _reset_ui() -> void:
 	btn_host.disabled = false
