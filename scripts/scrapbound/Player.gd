@@ -135,7 +135,7 @@ func _physics_process(delta: float) -> void:
 		if global_position.distance_to(remote_target_pos) > 1.0:
 			global_position = global_position.lerp(remote_target_pos, delta * 20.0)
 
-@rpc("unreliable_ordered")
+@rpc("any_peer", "unreliable_ordered")
 func sync_transform(pos: Vector2, vel: Vector2, anim: String, flip: bool, aim_dir: Vector2) -> void:
 	if is_multiplayer_authority():
 		return
@@ -211,7 +211,7 @@ func request_shoot(spawn_pos: Vector2, dir: Vector2) -> void:
 	# Server validates and broadcasts bullet spawn
 	spawn_bullet_net.rpc(spawn_pos, dir, bullet_damage, bullet_speed, is_piercing, player_id)
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_bullet_net(spawn_pos: Vector2, dir: Vector2, dmg: int, spd: float, pierce: bool, shooter_id: int) -> void:
 	var b = bullet_scene.instantiate()
 	b.global_position = spawn_pos
@@ -236,7 +236,7 @@ func take_damage_server(amount: int) -> void:
 	if health <= 0:
 		die_server()
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_health_net(new_hp: int) -> void:
 	health = new_hp
 	if health_bar:
@@ -256,7 +256,7 @@ func die_server() -> void:
 	respawn_timer = death_count * 5.0
 	sync_death_net.rpc(respawn_timer)
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_death_net(duration: float) -> void:
 	is_dead = true
 	respawn_timer = duration
@@ -278,7 +278,7 @@ func _process_respawn_server(delta: float) -> void:
 	if respawn_timer <= 0.0:
 		respawn_server()
 
-@rpc("call_local", "unreliable")
+@rpc("any_peer", "call_local", "unreliable")
 func sync_respawn_timer_net(time_left: float) -> void:
 	respawn_timer = time_left
 	if respawn_label:
@@ -299,7 +299,7 @@ func respawn_server() -> void:
 			
 	sync_respawn_net.rpc(spawn_pos)
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_respawn_net(spawn_pos: Vector2) -> void:
 	is_dead = false
 	health = max_health
