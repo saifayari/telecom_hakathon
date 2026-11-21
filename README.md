@@ -19,6 +19,15 @@ SCRAPBOUND is a fast-paced, two-player competitive tower defense survival game w
 3. Once Player 2 connects, Player 1 clicks **START MATCH**!
 
 ### Local Testing (Single Computer):
+
+**On Linux:**
+* Run `./start_two_players.sh` (or from repo root `./start_two_players.sh`) to launch two game windows side-by-side.
+* Or run `./run_game.sh` to launch a single game instance.
+* In Window 1, click **HOST GAME (P1)**.
+* In Window 2, click **JOIN GAME (P2)**.
+* Click **START MATCH** on Window 1!
+
+**On Windows:**
 * Double-click `START_TWO_PLAYERS.bat` to launch two game windows side-by-side.
 * In Window 1, click **HOST GAME (P1)**.
 * In Window 2, click **JOIN GAME (P2)**.

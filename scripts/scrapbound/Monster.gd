@@ -81,7 +81,7 @@ func _physics_process_client(delta: float) -> void:
 	if global_position.distance_to(remote_pos) > 1.0:
 		global_position = global_position.lerp(remote_pos, delta * 15.0)
 
-@rpc("unreliable_ordered")
+@rpc("any_peer", "unreliable_ordered")
 func sync_monster_state(pos: Vector2, anim: String, flip: bool) -> void:
 	if multiplayer.is_server():
 		return
@@ -131,7 +131,7 @@ func _start_attack_server() -> void:
 	var strike_timer = get_tree().create_timer(0.22)
 	strike_timer.timeout.connect(_deliver_attack_server)
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func play_attack_net() -> void:
 	if anim_sprite:
 		anim_sprite.play("attack")
@@ -168,7 +168,7 @@ func take_damage(amount: int, player_id: int = 1) -> void:
 	if health <= 0:
 		die_server()
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_monster_hit_net(new_hp: int) -> void:
 	health = new_hp
 	if health_bar:
@@ -188,6 +188,6 @@ func die_server() -> void:
 		main.on_monster_destroyed_server(self, last_hit_by_player, global_position)
 	remove_monster_net.rpc()
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func remove_monster_net() -> void:
 	queue_free()
