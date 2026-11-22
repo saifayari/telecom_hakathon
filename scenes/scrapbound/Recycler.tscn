@@ -1,16 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://recycler_scrapbound01"]
+[gd_scene load_steps=6 format=3 uid="uid://recycler_scrapbound01"]
 
 [ext_resource type="Script" path="res://scripts/scrapbound/Recycler.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/sprites/props/telecom_junction_box.png" id="2_tex"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/weld_resonate.wav" id="3_audio"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/alloy_crafted.wav" id="4_craft"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
-radius = 36.0
+radius = 48.0
 
 [node name="ScrapRecycler" type="Area2D" groups=["Recyclers"]]
 collision_layer = 64
 collision_mask = 2
 script = ExtResource("1_script")
+
+[node name="ZoneCircle" type="Line2D" parent="."]
+points = PackedVector2Array(48, 0, 44, 18, 34, 34, 18, 44, 0, 48, -18, 44, -34, 34, -44, 18, -48, 0, -44, -18, -34, -34, -18, -44, 0, -48, 18, -44, 34, -34, 44, -18, 48, 0)
+width = 2.0
+default_color = Color(0.2, 0.85, 1, 0.45)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
@@ -29,10 +35,10 @@ text = "RECYCLER P1"
 horizontal_alignment = 1
 
 [node name="PromptLabel" type="Label" parent="."]
-offset_left = -60.0
-offset_top = -48.0
-offset_right = 60.0
-offset_bottom = -34.0
+offset_left = -80.0
+offset_top = -52.0
+offset_right = 80.0
+offset_bottom = -36.0
 theme_override_font_sizes/font_size = 8
 text = "[E] RECYCLE"
 horizontal_alignment = 1
@@ -40,3 +46,7 @@ horizontal_alignment = 1
 [node name="ProcessAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_audio")
 volume_db = -4.0
+
+[node name="CraftAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_craft")
+volume_db = -2.0

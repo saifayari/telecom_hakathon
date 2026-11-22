@@ -7,11 +7,12 @@ signal monster_killed(monster: Node2D, killer_player_id: int)
 @export var speed: float = 72.0
 @export var attack_damage: int = 15
 @export var attack_cooldown: float = 1.0
-@export var attack_range: float = 34.0
+@export var attack_range: float = 64.0
 
 var health: int = 80
 var is_attacking: bool = false
 var attack_timer: float = 0.0
+var is_dead: bool = false
 
 var target_node: Node2D = null
 var target_position: Vector2 = Vector2.ZERO
@@ -20,6 +21,7 @@ var last_hit_by_player: int = 1
 var remote_pos: Vector2 = Vector2.ZERO
 
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var audio_attack: AudioStreamPlayer2D = $AudioAttack
 @onready var audio_hit: AudioStreamPlayer2D = $AudioHit
@@ -28,6 +30,7 @@ func _ready() -> void:
 	add_to_group("Enemies")
 	health = max_health
 	remote_pos = global_position
+	is_dead = false
 	
 	if health_bar:
 		health_bar.max_value = max_health
@@ -38,12 +41,18 @@ func _ready() -> void:
 		anim_sprite.animation_finished.connect(_on_animation_finished)
 
 func _physics_process(delta: float) -> void:
+	if is_dead:
+		return
+		
 	if multiplayer.is_server():
 		_physics_process_server(delta)
 	else:
 		_physics_process_client(delta)
 
 func _physics_process_server(delta: float) -> void:
+	if is_dead:
+		return
+		
 	if is_attacking:
 		velocity = Vector2.ZERO
 		move_and_slide()
@@ -73,17 +82,20 @@ func _physics_process_server(delta: float) -> void:
 	move_and_slide()
 	
 	# Broadcast position and animation to clients
-	var anim_name = anim_sprite.animation if anim_sprite else "walk"
-	var flip = anim_sprite.flip_h if anim_sprite else false
-	sync_monster_state.rpc(global_position, anim_name, flip)
+	if not is_dead and is_instance_valid(self):
+		var anim_name = anim_sprite.animation if anim_sprite else "walk"
+		var flip = anim_sprite.flip_h if anim_sprite else false
+		sync_monster_state.rpc(global_position, anim_name, flip)
 
 func _physics_process_client(delta: float) -> void:
+	if is_dead:
+		return
 	if global_position.distance_to(remote_pos) > 1.0:
 		global_position = global_position.lerp(remote_pos, delta * 15.0)
 
 @rpc("unreliable_ordered")
 func sync_monster_state(pos: Vector2, anim: String, flip: bool) -> void:
-	if multiplayer.is_server():
+	if multiplayer.is_server() or is_dead:
 		return
 	remote_pos = pos
 	if anim_sprite:
@@ -92,21 +104,27 @@ func sync_monster_state(pos: Vector2, anim: String, flip: bool) -> void:
 		anim_sprite.flip_h = flip
 
 func _update_ai_target() -> void:
+	var my_side = 1 if global_position.x < 2816.0 else 2
 	var candidates: Array = []
 	var towers = get_tree().get_nodes_in_group("Towers")
 	for t in towers:
 		if is_instance_valid(t) and t.health > 0:
-			candidates.append(t)
+			var side = 1 if t.global_position.x < 2816.0 else 2
+			if side == my_side:
+				candidates.append(t)
 			
 	var players = get_tree().get_nodes_in_group("Players")
 	for p in players:
 		if is_instance_valid(p) and not p.is_dead:
-			candidates.append(p)
+			var side = 1 if p.global_position.x < 2816.0 else 2
+			if side == my_side:
+				candidates.append(p)
 			
 	var barriers = get_tree().get_nodes_in_group("Barriers")
 	for b in barriers:
 		if is_instance_valid(b) and b.health > 0:
-			if global_position.distance_to(b.global_position) < 48.0:
+			var side = 1 if b.global_position.x < 2816.0 else 2
+			if side == my_side and global_position.distance_to(b.global_position) < 80.0:
 				candidates.append(b)
 				
 	var nearest: Node2D = null
@@ -121,9 +139,11 @@ func _update_ai_target() -> void:
 		target_node = nearest
 		target_position = nearest.global_position
 	else:
-		target_position = Vector2(540, 300)
+		target_position = Vector2(1408, 860) if my_side == 1 else Vector2(4224, 860)
 
 func _start_attack_server() -> void:
+	if is_dead:
+		return
 	is_attacking = true
 	velocity = Vector2.ZERO
 	play_attack_net.rpc()
@@ -140,16 +160,18 @@ func play_attack_net() -> void:
 		audio_attack.play()
 
 func _deliver_attack_server() -> void:
-	if not is_instance_valid(self):
+	if not is_instance_valid(self) or is_dead:
 		return
 	if target_node and is_instance_valid(target_node):
 		var d = global_position.distance_to(target_node.global_position)
-		if d <= attack_range + 24.0:
+		if d <= attack_range + 30.0:
 			if target_node is ScrapboundPlayer:
 				target_node.take_damage_server(attack_damage)
 			elif target_node is ScrapboundTower:
 				target_node.take_damage_server(attack_damage)
 			elif target_node is ScrapboundBarrier:
+				target_node.take_damage_server(attack_damage)
+			elif target_node.has_method("take_damage_server"):
 				target_node.take_damage_server(attack_damage)
 
 func _on_animation_finished() -> void:
@@ -159,7 +181,7 @@ func _on_animation_finished() -> void:
 		anim_sprite.play("walk")
 
 func take_damage(amount: int, player_id: int = 1) -> void:
-	if not multiplayer.is_server():
+	if not multiplayer.is_server() or is_dead or health <= 0:
 		return
 	last_hit_by_player = player_id
 	health -= amount
@@ -182,6 +204,12 @@ func sync_monster_hit_net(new_hp: int) -> void:
 		t.timeout.connect(func(): if is_instance_valid(self) and anim_sprite: anim_sprite.modulate = Color.WHITE)
 
 func die_server() -> void:
+	if is_dead:
+		return
+	is_dead = true
+	set_physics_process(false)
+	if collision_shape:
+		collision_shape.set_deferred("disabled", true)
 	monster_killed.emit(self, last_hit_by_player)
 	var main = get_parent() as ScrapboundMain
 	if main:
@@ -190,4 +218,13 @@ func die_server() -> void:
 
 @rpc("call_local", "reliable")
 func remove_monster_net() -> void:
-	queue_free()
+	is_dead = true
+	set_physics_process(false)
+	if collision_shape:
+		collision_shape.set_deferred("disabled", true)
+	visible = false
+	var t = get_tree().create_timer(0.25)
+	t.timeout.connect(func():
+		if is_instance_valid(self):
+			queue_free()
+	)

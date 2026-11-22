@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://scrapbound_main01"]
+[gd_scene load_steps=19 format=3 uid="uid://scrapbound_main01"]
 
 [ext_resource type="Script" path="res://scripts/scrapbound/ScrapboundMain.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/scrapbound/Tower.tscn" id="2_tower"]
@@ -6,116 +6,267 @@
 [ext_resource type="PackedScene" path="res://scenes/scrapbound/Recycler.tscn" id="4_recycler"]
 [ext_resource type="PackedScene" path="res://scenes/scrapbound/HUD.tscn" id="5_hud"]
 [ext_resource type="AudioStream" path="res://assets/audio/music/ost_night_battle.ogg" id="6_music"]
+[ext_resource type="Texture2D" path="res://assets/sprites/environment/metalslug_arena_night.png" id="7_arena"]
+[ext_resource type="Texture2D" path="res://assets/sprites/environment/turret_mount_pad_night.png" id="9_mount"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/power_generator.png" id="10_gen"]
+[ext_resource type="Texture2D" path="res://assets/sprites/interactables/comm_core.png" id="11_comm_core"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/storage_crate.png" id="14_crate"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/cable_spool.png" id="15_spool"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/telecom_junction_box.png" id="16_jbox"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
-size = Vector2(1100, 30)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horiz"]
+size = Vector2(5700, 40)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
-size = Vector2(1100, 30)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vert"]
+size = Vector2(40, 1600)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
-size = Vector2(30, 620)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_car1"]
+size = Vector2(160, 90)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
-size = Vector2(30, 620)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_car2"]
+size = Vector2(170, 95)
 
-[node name="ScrapboundMain" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_car3"]
+size = Vector2(140, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_car_sedan"]
+size = Vector2(340, 160)
+
+[node name="ScrapboundMain" type="Node2D" groups=["Main"]]
 script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
-offset_right = 1080.0
-offset_bottom = 600.0
-color = Color(0.08, 0.1, 0.13, 1)
+[node name="MapEnvironment" type="Node2D" parent="."]
 
-[node name="GridPattern" type="ColorRect" parent="."]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 1060.0
-offset_bottom = 580.0
-color = Color(0.12, 0.15, 0.18, 1)
+[node name="ArenaMapBg1" type="TextureRect" parent="MapEnvironment"]
+offset_right = 2816.0
+offset_bottom = 1536.0
+texture = ExtResource("7_arena")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="P1Territory" type="ColorRect" parent="."]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 535.0
-offset_bottom = 575.0
-color = Color(0.1, 0.22, 0.3, 0.25)
+[node name="ArenaMapBg2" type="TextureRect" parent="MapEnvironment"]
+offset_left = 2816.0
+offset_right = 5632.0
+offset_bottom = 1536.0
+texture = ExtResource("7_arena")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="P2Territory" type="ColorRect" parent="."]
-offset_left = 545.0
-offset_top = 25.0
-offset_right = 1055.0
-offset_bottom = 575.0
-color = Color(0.3, 0.18, 0.1, 0.25)
+[node name="DarkVignette" type="ColorRect" parent="MapEnvironment"]
+offset_right = 5632.0
+offset_bottom = 1536.0
+color = Color(0.04, 0.06, 0.09, 0.12)
 
-[node name="DividerWall" type="ColorRect" parent="."]
-offset_left = 526.0
-offset_top = 0.0
-offset_right = 554.0
-offset_bottom = 600.0
-color = Color(0.04, 0.05, 0.07, 1)
+[node name="CentralCommCore1" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(1408, 650)
+scale = Vector2(0.65, 0.65)
+texture = ExtResource("11_comm_core")
 
-[node name="DividerBorderLeft" type="Line2D" parent="."]
-points = PackedVector2Array(526, 0, 526, 600)
-width = 2.0
-default_color = Color(0.25, 0.35, 0.45, 0.9)
+[node name="P1RefineryPad" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(1050, 860)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("9_mount")
 
-[node name="DividerBorderRight" type="Line2D" parent="."]
-points = PackedVector2Array(554, 0, 554, 600)
-width = 2.0
-default_color = Color(0.25, 0.35, 0.45, 0.9)
+[node name="P1Generator" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(1130, 770)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("10_gen")
+
+[node name="P1Crate" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(960, 960)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("14_crate")
+
+[node name="P1CableSpool" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(1120, 960)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("15_spool")
+
+[node name="P1JunctionBox" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(1050, 770)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("16_jbox")
+
+[node name="CentralCommCore2" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(4224, 650)
+scale = Vector2(0.65, 0.65)
+texture = ExtResource("11_comm_core")
+
+[node name="P2RefineryPad" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(3866, 860)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("9_mount")
+
+[node name="P2Generator" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(3786, 770)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("10_gen")
+flip_h = true
+
+[node name="P2Crate" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(3776, 960)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("14_crate")
+
+[node name="P2CableSpool" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(3936, 960)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("15_spool")
+
+[node name="P2JunctionBox" type="Sprite2D" parent="MapEnvironment"]
+position = Vector2(3866, 770)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("16_jbox")
 
 [node name="ArenaBounds" type="StaticBody2D" parent="." groups=["WorldBounds"]]
 collision_layer = 1
 collision_mask = 7
 
 [node name="ColTop" type="CollisionShape2D" parent="ArenaBounds"]
-position = Vector2(540, 10)
-shape = SubResource("RectangleShape2D_top")
+position = Vector2(2816, -10)
+shape = SubResource("RectangleShape2D_horiz")
 
 [node name="ColBottom" type="CollisionShape2D" parent="ArenaBounds"]
-position = Vector2(540, 590)
-shape = SubResource("RectangleShape2D_bottom")
+position = Vector2(2816, 1546)
+shape = SubResource("RectangleShape2D_horiz")
 
 [node name="ColLeft" type="CollisionShape2D" parent="ArenaBounds"]
-position = Vector2(10, 300)
-shape = SubResource("RectangleShape2D_left")
+position = Vector2(-10, 768)
+shape = SubResource("RectangleShape2D_vert")
 
 [node name="ColRight" type="CollisionShape2D" parent="ArenaBounds"]
-position = Vector2(1070, 300)
-shape = SubResource("RectangleShape2D_right")
+position = Vector2(5642, 768)
+shape = SubResource("RectangleShape2D_vert")
 
-[node name="ColCenter" type="CollisionShape2D" parent="ArenaBounds"]
-position = Vector2(540, 300)
-shape = SubResource("RectangleShape2D_right")
+[node name="ColDivider" type="CollisionShape2D" parent="ArenaBounds"]
+position = Vector2(2816, 768)
+shape = SubResource("RectangleShape2D_vert")
+
+[node name="MapVehicles" type="Node2D" parent="."]
+
+[node name="Car_P1_TopLeft" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(640, 360)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P1_TopLeft"]
+shape = SubResource("RectangleShape2D_car1")
+
+[node name="Car_P1_TopRight" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(2250, 360)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P1_TopRight"]
+shape = SubResource("RectangleShape2D_car1")
+
+[node name="Car_P1_BotLeft" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(1050, 1080)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P1_BotLeft"]
+shape = SubResource("RectangleShape2D_car2")
+
+[node name="Car_P1_BotRight" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(1850, 1080)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P1_BotRight"]
+shape = SubResource("RectangleShape2D_car2")
+
+[node name="Car_P1_MidAlley" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(1220, 790)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P1_MidAlley"]
+shape = SubResource("RectangleShape2D_car3")
+
+[node name="Car_P1_Sedan_Street" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(760, 840)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P1_Sedan_Street"]
+shape = SubResource("RectangleShape2D_car_sedan")
+
+[node name="Car_P2_TopLeft" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(3456, 360)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P2_TopLeft"]
+shape = SubResource("RectangleShape2D_car1")
+
+[node name="Car_P2_TopRight" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(5066, 360)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P2_TopRight"]
+shape = SubResource("RectangleShape2D_car1")
+
+[node name="Car_P2_BotLeft" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(3866, 1080)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P2_BotLeft"]
+shape = SubResource("RectangleShape2D_car2")
+
+[node name="Car_P2_BotRight" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(4666, 1080)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P2_BotRight"]
+shape = SubResource("RectangleShape2D_car2")
+
+[node name="Car_P2_MidAlley" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(4036, 790)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P2_MidAlley"]
+shape = SubResource("RectangleShape2D_car3")
+
+[node name="Car_P2_Sedan_Street" type="StaticBody2D" parent="MapVehicles" groups=["Obstacles", "Vehicles"]]
+position = Vector2(3576, 840)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapVehicles/Car_P2_Sedan_Street"]
+shape = SubResource("RectangleShape2D_car_sedan")
 
 [node name="Tower1" parent="." instance=ExtResource("2_tower")]
-position = Vector2(120, 300)
+position = Vector2(1408, 860)
 tower_id = 1
 
 [node name="Tower2" parent="." instance=ExtResource("2_tower")]
-position = Vector2(960, 300)
+position = Vector2(4224, 860)
 tower_id = 2
 
 [node name="Recycler1" parent="." instance=ExtResource("4_recycler")]
-position = Vector2(190, 190)
+position = Vector2(1050, 860)
 recycler_id = 1
 
 [node name="Recycler2" parent="." instance=ExtResource("4_recycler")]
-position = Vector2(890, 190)
+position = Vector2(3866, 860)
 recycler_id = 2
 
 [node name="Player1" parent="." instance=ExtResource("3_player")]
-position = Vector2(200, 300)
+position = Vector2(1408, 980)
 player_id = 1
 
 [node name="Player2" parent="." instance=ExtResource("3_player")]
-position = Vector2(880, 300)
+position = Vector2(4224, 980)
 player_id = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(540, 300)
-zoom = Vector2(0.59, 0.59)
+position = Vector2(1408, 980)
+zoom = Vector2(1.05, 1.05)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

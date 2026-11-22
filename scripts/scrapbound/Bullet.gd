@@ -40,6 +40,8 @@ func _on_area_entered(area: Area2D) -> void:
 
 func _handle_hit(target: Node2D) -> void:
 	if target.is_in_group("Enemies"):
+		if collision_shape and not is_piercing:
+			collision_shape.set_deferred("disabled", true)
 		if target.has_method("take_damage"):
 			target.take_damage(damage, shooter_player_id)
 		
@@ -48,6 +50,10 @@ func _handle_hit(target: Node2D) -> void:
 		else:
 			pierced_count += 1
 			if pierced_count >= MAX_PIERCE:
+				if collision_shape:
+					collision_shape.set_deferred("disabled", true)
 				queue_free()
 	elif target.is_in_group("Obstacles") or target.is_in_group("WorldBounds"):
+		if collision_shape:
+			collision_shape.set_deferred("disabled", true)
 		queue_free()

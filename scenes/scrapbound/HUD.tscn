@@ -22,6 +22,157 @@ corner_radius_bottom_left = 6
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp"]
 bg_color = Color(0.2, 0.85, 0.4, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_joy_base"]
+bg_color = Color(0.08, 0.12, 0.18, 0.55)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.8, 1, 0.7)
+corner_radius_top_left = 44
+corner_radius_top_right = 44
+corner_radius_bottom_right = 44
+corner_radius_bottom_left = 44
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_joy_knob"]
+bg_color = Color(0.2, 0.85, 1, 0.85)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_fire"]
+bg_color = Color(0.85, 0.22, 0.22, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.6, 0.3, 0.95)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_rapid"]
+bg_color = Color(0.12, 0.45, 0.85, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.8, 1, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_cannon"]
+bg_color = Color(0.65, 0.2, 0.75, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9, 0.5, 1, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_recycle"]
+bg_color = Color(0.12, 0.6, 0.3, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.95, 0.6, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_build"]
+bg_color = Color(0.85, 0.5, 0.15, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.8, 0.4, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_wood"]
+bg_color = Color(0.55, 0.35, 0.15, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.85, 0.6, 0.3, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_iron"]
+bg_color = Color(0.35, 0.4, 0.45, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.75, 0.8, 0.85, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_plastic"]
+bg_color = Color(0.1, 0.55, 0.65, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.85, 0.95, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_craft_panel"]
+bg_color = Color(0.08, 0.1, 0.14, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.75, 1, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_craft_card"]
+bg_color = Color(0.12, 0.15, 0.22, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.45, 0.7, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_switch"]
+bg_color = Color(0.2, 0.4, 0.8, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.7, 1, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="ScrapboundHUD" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -103,7 +254,7 @@ text = "100 HP"
 [node name="LblTower" type="Label" parent="TopPanel/HBox/MyBox/HBoxBars"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 8
-text = "TOWER:"
+text = "BASE TOWER:"
 
 [node name="MyTowerBar" type="ProgressBar" parent="TopPanel/HBox/MyBox/HBoxBars"]
 unique_name_in_owner = true
@@ -137,7 +288,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 8
-text = "SCRAP: 0  |  BATTERY: 0"
+text = "GARBAGE: 0  |  BATTERY: 0"
 horizontal_alignment = 1
 
 [node name="MyMatsLabel" type="Label" parent="TopPanel/HBox/MyBox/HBoxInv"]
@@ -145,11 +296,12 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 8
-text = "CRAFT: [A:0 B:0 C:0 D:0]   BUILD: [Wood:0 Plas:0 Iron:0]"
+text = "RAW: [Wood:0 Iron:0 Plas:0]  CRAFT: [A:0 B:0 C:0 D:0]"
 horizontal_alignment = 2
 
 [node name="CenterBox" type="VBoxContainer" parent="TopPanel/HBox"]
 layout_mode = 2
+custom_minimum_size = Vector2(90, 0)
 alignment = 1
 
 [node name="MatchTitle" type="Label" parent="TopPanel/HBox/CenterBox"]
@@ -165,50 +317,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "02:00"
 horizontal_alignment = 1
-
-[node name="OppBox" type="VBoxContainer" parent="TopPanel/HBox"]
-layout_mode = 2
-custom_minimum_size = Vector2(170, 0)
-alignment = 1
-
-[node name="OppTitleLabel" type="Label" parent="TopPanel/HBox/OppBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
-theme_override_font_sizes/font_size = 9
-text = "OPPONENT (PLAYER 2)"
-horizontal_alignment = 2
-
-[node name="OppScoreLabel" type="Label" parent="TopPanel/HBox/OppBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "SCORE: 0"
-horizontal_alignment = 2
-
-[node name="HBoxOppTower" type="HBoxContainer" parent="TopPanel/HBox/OppBox"]
-layout_mode = 2
-
-[node name="LblOppTower" type="Label" parent="TopPanel/HBox/OppBox/HBoxOppTower"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "TOWER:"
-
-[node name="OppTowerBar" type="ProgressBar" parent="TopPanel/HBox/OppBox/HBoxOppTower"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_override_styles/fill = SubResource("StyleBoxFlat_hp")
-max_value = 1000.0
-value = 1000.0
-show_percentage = false
-
-[node name="OppTowerVal" type="Label" parent="TopPanel/HBox/OppBox/HBoxOppTower"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "1000/1000"
 
 [node name="BottomHints" type="Panel" parent="."]
 layout_mode = 1
@@ -228,9 +336,610 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 8
-text = "CONTROLS: [W,A,S,D] / [ARROWS] Move  |  [SPACE] Shoot  |  [E] Recycle (at machine) / Quick Craft (A+B or A+C)  |  [Q] Build Barrier (Costs 2 Materials)"
+text = "CONTROLS: Joystick / [WASD] Move  |  [FIRE] / [SPACE] Shoot  |  [R] / [SWITCH] Weapon  |  [C] / [CRAFT] Arsenal  |  [REFINE] 10 Garbage -> Random Mat  |  [Q] Barrier (2 Mats)"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="OnScreenControls" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="JoystickBase" type="Panel" parent="OnScreenControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -122.0
+offset_right = 106.0
+offset_bottom = -34.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_joy_base")
+
+[node name="JoystickKnob" type="Panel" parent="OnScreenControls/JoystickBase"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_joy_knob")
+
+[node name="JoyLabel" type="Label" parent="OnScreenControls/JoystickBase"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -16.0
+offset_right = 30.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.6, 0.85, 1, 0.7)
+theme_override_font_sizes/font_size = 7
+text = "MOVE"
+horizontal_alignment = 1
+
+[node name="ActionControls" type="Control" parent="OnScreenControls"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -140.0
+offset_right = -10.0
+offset_bottom = -26.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="BtnShoot" type="Button" parent="OnScreenControls/ActionControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -64.0
+offset_right = 0.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_fire")
+text = "🔥
+FIRE"
+
+[node name="BtnBuild" type="Button" parent="OnScreenControls/ActionControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -98.0
+offset_right = 0.0
+offset_bottom = -70.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_build")
+text = "🛡 WALL"
+
+[node name="BtnQuickTower" type="Button" parent="OnScreenControls/ActionControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -134.0
+offset_right = 0.0
+offset_bottom = -104.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_rapid")
+text = "🏰 TOWER"
+
+[node name="BtnSwitchWeapon" type="Button" parent="OnScreenControls/ActionControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -142.0
+offset_top = -134.0
+offset_right = -68.0
+offset_bottom = -104.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_switch")
+text = "🔄 SWITCH"
+
+[node name="BtnRefine" type="Button" parent="OnScreenControls/ActionControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -134.0
+offset_right = -148.0
+offset_bottom = -104.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_recycle")
+text = "♻ REFINE (10)"
+
+[node name="BtnOpenCraft" type="Button" parent="OnScreenControls/ActionControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -98.0
+offset_right = -68.0
+offset_bottom = -70.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_rapid")
+text = "🎒 WORKSHOP & INVENTORY"
+
+[node name="HBoxQuickCraft" type="HBoxContainer" parent="OnScreenControls/ActionControls"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -64.0
+offset_right = -68.0
+offset_bottom = -38.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 4
+
+[node name="BtnCraftRapid" type="Button" parent="OnScreenControls/ActionControls/HBoxQuickCraft"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_rapid")
+text = "⚡ SMG"
+
+[node name="BtnCraftCannon" type="Button" parent="OnScreenControls/ActionControls/HBoxQuickCraft"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_cannon")
+text = "💥 CANNON"
+
+[node name="CraftingPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -205.0
+offset_top = -145.0
+offset_right = 205.0
+offset_bottom = 145.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_craft_panel")
+
+[node name="VBoxCraft" type="VBoxContainer" parent="CraftingPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="HBoxCraftHeader" type="HBoxContainer" parent="CraftingPanel/VBoxCraft"]
+layout_mode = 2
+
+[node name="CraftHeaderTitle" type="Label" parent="CraftingPanel/VBoxCraft/HBoxCraftHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "🎒 WORKSHOP & INVENTORY"
+
+[node name="BtnCloseCraft" type="Button" parent="CraftingPanel/VBoxCraft/HBoxCraftHeader"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 20)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "✕"
+
+[node name="CraftMatsLabel" type="Label" parent="CraftingPanel/VBoxCraft"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 8
+text = "STOCKPILE: 🌲 Wood: 0  |  ⚙ Iron: 0  |  🧪 Plastic: 0"
+
+[node name="HBoxTabs" type="HBoxContainer" parent="CraftingPanel/VBoxCraft"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BtnTabWeapons" type="Button" parent="CraftingPanel/VBoxCraft/HBoxTabs"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_rapid")
+text = "🔫 WEAPONS"
+
+[node name="BtnTabTowers" type="Button" parent="CraftingPanel/VBoxCraft/HBoxTabs"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_build")
+text = "🏰 TOWERS & DEFENSE"
+
+[node name="Sep1" type="HSeparator" parent="CraftingPanel/VBoxCraft"]
+layout_mode = 2
+
+[node name="VBoxWeapons" type="VBoxContainer" parent="CraftingPanel/VBoxCraft"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="CardSMG" type="Panel" parent="CraftingPanel/VBoxCraft/VBoxWeapons"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_craft_card")
+
+[node name="HBoxSMG" type="HBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSMG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = -8.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxInfoSMG" type="VBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSMG/HBoxSMG"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LblSMGTitle" type="Label" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSMG/HBoxSMG/VBoxInfoSMG"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 8
+text = "⚡ RAPID-FIRE SMG"
+
+[node name="LblSMGDesc" type="Label" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSMG/HBoxSMG/VBoxInfoSMG"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Speed: 0.11s • Dmg: 18 • Cost: 1 Iron + 1 Plastic"
+
+[node name="BtnInvCraftSMG" type="Button" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSMG/HBoxSMG"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 22)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_rapid")
+text = "CRAFT"
+
+[node name="CardCannon" type="Panel" parent="CraftingPanel/VBoxCraft/VBoxWeapons"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_craft_card")
+
+[node name="HBoxCannon" type="HBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardCannon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = -8.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxInfoCannon" type="VBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardCannon/HBoxCannon"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LblCannonTitle" type="Label" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardCannon/HBoxCannon/VBoxInfoCannon"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.65, 0.2, 1)
+theme_override_font_sizes/font_size = 8
+text = "💥 HEAVY CANNON"
+
+[node name="LblCannonDesc" type="Label" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardCannon/HBoxCannon/VBoxInfoCannon"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Speed: 0.38s • Dmg: 60 (Piercing) • Cost: 2 Iron + 1 Wood"
+
+[node name="BtnInvCraftCannon" type="Button" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardCannon/HBoxCannon"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 22)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_cannon")
+text = "CRAFT"
+
+[node name="CardShotgun" type="Panel" parent="CraftingPanel/VBoxCraft/VBoxWeapons"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_craft_card")
+
+[node name="HBoxShotgun" type="HBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardShotgun"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = -8.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxInfoShotgun" type="VBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardShotgun/HBoxShotgun"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LblShotgunTitle" type="Label" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardShotgun/HBoxShotgun/VBoxInfoShotgun"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 8
+text = "🔥 SPREAD SHOTGUN"
+
+[node name="LblShotgunDesc" type="Label" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardShotgun/HBoxShotgun/VBoxInfoShotgun"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Speed: 0.34s • 3-Pellet Spread • Cost: 1 Wood + 1 Iron + 1 Plastic"
+
+[node name="BtnInvCraftShotgun" type="Button" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardShotgun/HBoxShotgun"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 22)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_build")
+text = "CRAFT"
+
+[node name="CardSniper" type="Panel" parent="CraftingPanel/VBoxCraft/VBoxWeapons"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_craft_card")
+
+[node name="HBoxSniper" type="HBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSniper"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = -8.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxInfoSniper" type="VBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSniper/HBoxSniper"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LblSniperTitle" type="Label" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSniper/HBoxSniper/VBoxInfoSniper"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.4, 1, 1)
+theme_override_font_sizes/font_size = 8
+text = "⚡ PLASMA SNIPER"
+
+[node name="LblSniperDesc" type="Label" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSniper/HBoxSniper/VBoxInfoSniper"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Speed: 0.52s • Dmg: 85 (Laser) • Cost: 2 Plastic + 1 Iron"
+
+[node name="BtnInvCraftSniper" type="Button" parent="CraftingPanel/VBoxCraft/VBoxWeapons/CardSniper/HBoxSniper"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 22)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_switch")
+text = "CRAFT"
+
+[node name="VBoxTowers" type="VBoxContainer" parent="CraftingPanel/VBoxCraft"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="CardTower" type="Panel" parent="CraftingPanel/VBoxCraft/VBoxTowers"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_craft_card")
+
+[node name="HBoxTower" type="HBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardTower"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = -8.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxInfoTower" type="VBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardTower/HBoxTower"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LblTowerTitle" type="Label" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardTower/HBoxTower/VBoxInfoTower"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 8
+text = "🏰 AUTO-DEFENSE TOWER"
+
+[node name="LblTowerDesc" type="Label" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardTower/HBoxTower/VBoxInfoTower"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Auto-fires at monsters • 160 HP • Cost: 2 Iron + 1 Plastic"
+
+[node name="BtnInvBuildTower" type="Button" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardTower/HBoxTower"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(85, 22)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_rapid")
+text = "BUILD TOWER"
+
+[node name="CardRepair" type="Panel" parent="CraftingPanel/VBoxCraft/VBoxTowers"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_craft_card")
+
+[node name="HBoxRepair" type="HBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardRepair"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = -8.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxInfoRepair" type="VBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardRepair/HBoxRepair"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LblRepairTitle" type="Label" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardRepair/HBoxRepair/VBoxInfoRepair"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 8
+text = "🔧 REPAIR BASE TOWER"
+
+[node name="LblRepairDesc" type="Label" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardRepair/HBoxRepair/VBoxInfoRepair"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Restores +250 HP to your telecom base tower • Cost: 2 Wood + 1 Iron"
+
+[node name="BtnInvRepairTower" type="Button" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardRepair/HBoxRepair"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(85, 22)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_recycle")
+text = "REPAIR (+250)"
+
+[node name="CardWall" type="Panel" parent="CraftingPanel/VBoxCraft/VBoxTowers"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_craft_card")
+
+[node name="HBoxWall" type="HBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardWall"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = -8.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxInfoWall" type="VBoxContainer" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardWall/HBoxWall"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LblWallTitle" type="Label" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardWall/HBoxWall/VBoxInfoWall"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+theme_override_font_sizes/font_size = 8
+text = "🛡 REINFORCED BARRICADE"
+
+[node name="LblWallDesc" type="Label" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardWall/HBoxWall/VBoxInfoWall"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "Blocks & absorbs hits • 150 HP • Cost: 2 Raw Materials"
+
+[node name="BtnInvDeployWall" type="Button" parent="CraftingPanel/VBoxCraft/VBoxTowers/CardWall/HBoxWall"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(85, 22)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_build")
+text = "DEPLOY WALL"
+
+[node name="CraftHintLabel" type="Label" parent="CraftingPanel/VBoxCraft"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.8)
+theme_override_font_sizes/font_size = 7
+text = "💡 Hotkeys: [R] Switch Weapon | [T] Build Tower | [Q] Wall | [C] Workshop"
+horizontal_alignment = 1
 
 [node name="ResultsPanel" type="Panel" parent="."]
 unique_name_in_owner = true

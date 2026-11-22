@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://defensetower_scrapbound01"]
+
+[ext_resource type="Script" path="res://scripts/scrapbound/DefenseTower.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/environment/turret_mount_pad_night.png" id="2_base"]
+[ext_resource type="Texture2D" path="res://assets/sprites/turrets/scrap_sentry.png" id="3_gun"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sentry_shoot.wav" id="4_sfx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
+bg_color = Color(0.2, 0.85, 0.4, 1)
+
+[node name="ScrapboundDefenseTower" type="StaticBody2D" groups=["Barriers", "Obstacles", "Towers", "Turrets"]]
+collision_layer = 1
+collision_mask = 6
+script = ExtResource("1_script")
+
+[node name="BaseSprite" type="Sprite2D" parent="."]
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("2_base")
+
+[node name="TurretPivot" type="Node2D" parent="."]
+
+[node name="GunSprite" type="Sprite2D" parent="TurretPivot"]
+position = Vector2(0, 0)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("3_gun")
+
+[node name="Muzzle" type="Marker2D" parent="TurretPivot"]
+position = Vector2(30, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -20.0
+offset_top = -28.0
+offset_right = 20.0
+offset_bottom = -24.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
+max_value = 180.0
+value = 180.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="."]
+offset_left = -40.0
+offset_top = -42.0
+offset_right = 40.0
+offset_bottom = -28.0
+theme_override_font_sizes/font_size = 8
+text = "HEAVY TURRET"
+horizontal_alignment = 1
+
+[node name="ShootAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_sfx")
+volume_db = -5.0

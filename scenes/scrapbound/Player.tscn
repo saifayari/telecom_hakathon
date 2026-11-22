@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/sami/sami_walk_5.png" id="9_w5"]
 [ext_resource type="Texture2D" path="res://assets/sprites/weapons/gun_rifle.png" id="10_gun"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/sentry_shoot.wav" id="11_audio"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/scrap_pickup.wav" id="12_pickup"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_player"]
 animations = [{
@@ -55,8 +56,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
-radius = 7.0
-height = 22.0
+radius = 14.0
+height = 44.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
 bg_color = Color(0.2, 0.85, 0.35, 1)
@@ -67,51 +68,66 @@ collision_mask = 133
 script = ExtResource("1_script")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -6)
-scale = Vector2(0.42, 0.42)
+position = Vector2(0, -12)
+scale = Vector2(0.88, 0.88)
 sprite_frames = SubResource("SpriteFrames_player")
 animation = &"idle"
 
 [node name="WeaponPivot" type="Node2D" parent="."]
-position = Vector2(0, -4)
+position = Vector2(6, -13)
 
 [node name="GunSprite" type="Sprite2D" parent="WeaponPivot"]
-position = Vector2(12, 0)
-scale = Vector2(0.28, 0.28)
+position = Vector2(16, 0)
+scale = Vector2(0.58, 0.58)
 texture = ExtResource("10_gun")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
-offset_left = -14.0
-offset_top = -24.0
-offset_right = 14.0
-offset_bottom = -20.0
+offset_left = -28.0
+offset_top = -48.0
+offset_right = 28.0
+offset_bottom = -42.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
 max_value = 100.0
 value = 100.0
 show_percentage = false
 
 [node name="NameLabel" type="Label" parent="."]
-offset_left = -20.0
-offset_top = -38.0
-offset_right = 20.0
-offset_bottom = -24.0
-theme_override_font_sizes/font_size = 9
+offset_left = -40.0
+offset_top = -68.0
+offset_right = 40.0
+offset_bottom = -50.0
+theme_override_font_sizes/font_size = 11
 text = "P1"
 horizontal_alignment = 1
 
 [node name="RespawnLabel" type="Label" parent="."]
-offset_left = -40.0
-offset_top = -48.0
-offset_right = 40.0
-offset_bottom = -34.0
+offset_left = -50.0
+offset_top = -86.0
+offset_right = 50.0
+offset_bottom = -70.0
 theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 12
 text = "RESPAWN: 5s"
 horizontal_alignment = 1
 
 [node name="ShootAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_audio")
 volume_db = -3.0
+
+[node name="PickupAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_pickup")
+volume_db = -1.0
+
+[node name="ScrapBadge" type="Label" parent="."]
+visible = false
+offset_left = -70.0
+offset_top = -86.0
+offset_right = 70.0
+offset_bottom = -70.0
+theme_override_colors/font_color = Color(1, 0.9, 0.25, 1)
+theme_override_font_sizes/font_size = 10
+text = "🎒 0 SCRAP"
+horizontal_alignment = 1

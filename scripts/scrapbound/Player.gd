@@ -16,6 +16,9 @@ var is_dead: bool = false
 var respawn_timer: float = 0.0
 
 var current_weapon: String = "Basic"
+var unlocked_weapons: Array = ["Basic"]
+var was_switch_key_down: bool = false
+var was_craft_key_down: bool = false
 var shoot_cooldown: float = 0.0
 var shoot_rate: float = 0.22
 var bullet_damage: int = 25
@@ -23,6 +26,10 @@ var bullet_speed: float = 520.0
 var is_piercing: bool = false
 
 var aim_direction: Vector2 = Vector2.RIGHT
+var current_aim_angle: float = 0.0
+var weapon_recoil: float = 0.0
+var walk_cycle: float = 0.0
+var is_facing_left: bool = false
 
 var inventory: Dictionary = {
 	"scrap": 0,
@@ -38,6 +45,9 @@ var inventory: Dictionary = {
 
 var nearby_recycler: Node2D = null
 
+var mobile_move_vector: Vector2 = Vector2.ZERO
+var is_mobile_shooting: bool = false
+
 var bullet_scene = preload("res://scenes/scrapbound/Bullet.tscn")
 
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -48,6 +58,8 @@ var bullet_scene = preload("res://scenes/scrapbound/Bullet.tscn")
 @onready var weapon_pivot: Node2D = $WeaponPivot
 @onready var gun_sprite: Sprite2D = $WeaponPivot/GunSprite
 @onready var shoot_audio: AudioStreamPlayer2D = $ShootAudio
+@onready var pickup_audio: AudioStreamPlayer2D = $PickupAudio
+@onready var scrap_badge: Label = $ScrapBadge
 
 # Target transform for remote interpolation
 var remote_target_pos: Vector2 = Vector2.ZERO
@@ -69,28 +81,20 @@ func _ready() -> void:
 func setup_network_authority(peer_id: int, assigned_id: int) -> void:
 	player_id = assigned_id
 	set_multiplayer_authority(peer_id)
+	is_facing_left = (player_id != 1)
 	aim_direction = Vector2.RIGHT if player_id == 1 else Vector2.LEFT
+	current_aim_angle = aim_direction.angle()
+	remote_target_pos = global_position
 	
-	if not is_multiplayer_authority():
-		hide_character_from_view()
-	else:
-		show_character_for_local()
-		_apply_visual_theme()
-
-func hide_character_from_view() -> void:
-	visible = false
-	if anim_sprite: anim_sprite.visible = false
-	if weapon_pivot: weapon_pivot.visible = false
-	if health_bar: health_bar.visible = false
-	if name_label: name_label.visible = false
-	if respawn_label: respawn_label.visible = false
-
-func show_character_for_local() -> void:
 	visible = true
-	if anim_sprite: anim_sprite.visible = true
+	if anim_sprite:
+		anim_sprite.visible = true
+		anim_sprite.flip_h = is_facing_left
 	if weapon_pivot: weapon_pivot.visible = true
 	if health_bar: health_bar.visible = true
 	if name_label: name_label.visible = true
+	_apply_visual_theme()
+	_update_scrap_badge()
 
 func _apply_visual_theme() -> void:
 	if not is_inside_tree():
@@ -122,36 +126,79 @@ func _physics_process(delta: float) -> void:
 	
 	# Only the player who owns this character processes local inputs
 	if is_multiplayer_authority():
-		_handle_local_input()
-		# Broadcast position and animation state
+		_handle_local_input(delta)
+		# Broadcast position, animation state, facing direction, and aim direction
 		var anim_name = anim_sprite.animation if anim_sprite else "idle"
-		var flip_h = anim_sprite.flip_h if anim_sprite else false
+		var flip_h = is_facing_left
 		sync_transform.rpc(global_position, velocity, anim_name, flip_h, aim_direction)
 	else:
-		# Remote puppet: ensure it remains completely invisible to local player
-		if visible:
-			hide_character_from_view()
-		# smoothly interpolate towards received network position
-		if global_position.distance_to(remote_target_pos) > 1.0:
-			global_position = global_position.lerp(remote_target_pos, delta * 20.0)
+		# Remote puppet: smoothly interpolate towards received network position and weapon state
+		_process_remote_puppet(delta)
 
-@rpc("unreliable_ordered")
+@rpc("any_peer", "unreliable_ordered")
 func sync_transform(pos: Vector2, vel: Vector2, anim: String, flip: bool, aim_dir: Vector2) -> void:
 	if is_multiplayer_authority():
 		return
 	remote_target_pos = pos
 	velocity = vel
 	aim_direction = aim_dir
+	is_facing_left = flip
 	if anim_sprite:
 		if anim_sprite.animation != anim:
 			anim_sprite.play(anim)
 		anim_sprite.flip_h = flip
-	if weapon_pivot:
-		weapon_pivot.rotation = aim_direction.angle()
-		weapon_pivot.scale.y = -1.0 if aim_direction.x < 0 else 1.0
 
-func _handle_local_input() -> void:
+func _process_remote_puppet(delta: float) -> void:
+	var dist = global_position.distance_to(remote_target_pos)
+	if dist > 150.0:
+		global_position = remote_target_pos
+	elif dist > 0.5:
+		global_position = global_position.lerp(remote_target_pos, delta * 20.0)
+
+	var is_moving = velocity.length_squared() > 100.0
+	if is_moving:
+		walk_cycle += delta * 12.0
+	else:
+		walk_cycle = 0.0
+
+	var facing_left = anim_sprite.flip_h if anim_sprite else is_facing_left
+	_update_weapon_transform(delta, facing_left, is_moving)
+
+func _update_weapon_transform(delta: float, facing_left: bool, is_moving: bool) -> void:
+	if not weapon_pivot:
+		return
+
+	# Hand socket anchor:
+	# Sami sprite center is at (0, -12). Hands are at X = -6 when facing left, +6 when facing right, Y = -13.
+	var hand_x = -6.0 if facing_left else 6.0
+	var hand_y = -13.0
+	
+	# Gentle walking bobbing synchronized with footsteps:
+	if is_moving:
+		hand_y += sin(walk_cycle) * 1.5
+
+	weapon_pivot.position = weapon_pivot.position.lerp(Vector2(hand_x, hand_y), delta * 30.0)
+
+	# Smooth rotational interpolation (no snapping):
+	var target_angle = aim_direction.angle()
+	current_aim_angle = lerp_angle(current_aim_angle, target_angle, delta * 35.0)
+	weapon_pivot.rotation = current_aim_angle
+
+	# Mirror gun vertically when aiming left (2nd or 3rd quadrant) so the rifle stays upright:
+	var gun_aiming_left = abs(current_aim_angle) > (PI * 0.5)
+	weapon_pivot.scale.y = -1.0 if gun_aiming_left else 1.0
+
+	# Apply recoil kickback and smooth recovery:
+	weapon_recoil = move_toward(weapon_recoil, 0.0, delta * 35.0)
+	if gun_sprite:
+		gun_sprite.position.x = 16.0 - weapon_recoil
+
+func _handle_local_input(delta: float) -> void:
 	var move_vec = Vector2.ZERO
+	
+	# Analog joystick / Touch vector
+	if mobile_move_vector != Vector2.ZERO:
+		move_vec = mobile_move_vector
 	
 	# Unified controls: WASD or Arrow Keys
 	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
@@ -163,55 +210,106 @@ func _handle_local_input() -> void:
 	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
 		move_vec.y += 1.0
 		
-	if move_vec != Vector2.ZERO:
+	var is_moving = move_vec != Vector2.ZERO
+	if is_moving:
 		move_vec = move_vec.normalized()
 		velocity = move_vec * speed
-		aim_direction = move_vec
+		walk_cycle += delta * 12.0
 		if anim_sprite and anim_sprite.animation != "walk":
 			anim_sprite.play("walk")
-		if anim_sprite:
-			anim_sprite.flip_h = (aim_direction.x < 0)
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, speed)
+		velocity = velocity.move_toward(Vector2.ZERO, speed * 8.0 * delta)
+		walk_cycle = 0.0
 		if anim_sprite and anim_sprite.animation != "idle":
 			anim_sprite.play("idle")
-			
-	if weapon_pivot:
-		weapon_pivot.rotation = aim_direction.angle()
-		weapon_pivot.scale.y = -1.0 if aim_direction.x < 0 else 1.0
-		
+
+	# Aiming & Facing: Synchronized directly with movement direction & facing state (No cursor lock)
+	if is_moving:
+		aim_direction = move_vec
+		if move_vec.x < -0.01:
+			is_facing_left = true
+		elif move_vec.x > 0.01:
+			is_facing_left = false
+	else:
+		# When idle, retain the current aim direction and facing direction
+		if aim_direction == Vector2.ZERO:
+			aim_direction = Vector2.LEFT if is_facing_left else Vector2.RIGHT
+
+	if anim_sprite:
+		anim_sprite.flip_h = is_facing_left
+
+	# Synchronize weapon transform:
+	_update_weapon_transform(delta, is_facing_left, is_moving)
+
 	move_and_slide()
 	
-	# Attack: SPACE or K or ENTER
-	if (Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_K) or Input.is_key_pressed(KEY_ENTER)) and shoot_cooldown <= 0.0:
+	# Attack: Space OR Left Click OR K OR Enter OR Mobile Shoot
+	var want_shoot = is_mobile_shooting \
+		or Input.is_action_pressed("shoot") \
+		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) \
+		or Input.is_key_pressed(KEY_SPACE) \
+		or Input.is_key_pressed(KEY_K) \
+		or Input.is_key_pressed(KEY_ENTER)
+
+	if want_shoot and shoot_cooldown <= 0.0:
 		shoot_cooldown = shoot_rate
-		request_shoot.rpc_id(1, global_position + aim_direction * 18.0, aim_direction)
+		weapon_recoil = 5.0 # Crisp recoil kick!
+		var shoot_dir = aim_direction.normalized() if aim_direction != Vector2.ZERO else (Vector2.LEFT if is_facing_left else Vector2.RIGHT)
+		var shoot_origin = weapon_pivot.global_position + shoot_dir * 36.0
+		request_shoot.rpc_id(1, shoot_origin, shoot_dir)
 		
-	# Interact / Recycle / Craft: E or L
+	# Interact / Refine: E or L
 	if Input.is_key_pressed(KEY_E) or Input.is_key_pressed(KEY_L):
 		if nearby_recycler and is_instance_valid(nearby_recycler):
 			var main = get_parent() as ScrapboundMain
 			if main:
 				main.request_recycle.rpc_id(1, nearby_recycler.recycler_id, player_id)
-		else:
+				
+	# Switch Weapon: R or X
+	if Input.is_key_pressed(KEY_R) or Input.is_key_pressed(KEY_X):
+		if not was_switch_key_down:
+			was_switch_key_down = true
 			var main = get_parent() as ScrapboundMain
 			if main:
-				main.request_craft.rpc_id(1, player_id)
+				main.request_switch_weapon.rpc_id(1, player_id)
+	else:
+		was_switch_key_down = false
+		
+	# Toggle Crafting Inventory: C or I
+	if Input.is_key_pressed(KEY_C) or Input.is_key_pressed(KEY_I):
+		if not was_craft_key_down:
+			was_craft_key_down = true
+			var main = get_parent() as ScrapboundMain
+			if main and main.hud:
+				main.hud.toggle_crafting_panel()
+	else:
+		was_craft_key_down = false
 				
 	# Build Barrier: Q or O
 	if Input.is_key_pressed(KEY_Q) or Input.is_key_pressed(KEY_O):
 		var main = get_parent() as ScrapboundMain
 		if main:
-			main.request_build_barrier.rpc_id(1, player_id, global_position + aim_direction * 36.0)
+			main.request_build_barrier.rpc_id(1, player_id, global_position + aim_direction * 56.0)
+			
+	# Build Defense Tower: T
+	if Input.is_key_pressed(KEY_T):
+		var main = get_parent() as ScrapboundMain
+		if main:
+			main.request_build_tower.rpc_id(1, player_id, global_position + aim_direction * 56.0)
 
 @rpc("any_peer", "call_local", "reliable")
 func request_shoot(spawn_pos: Vector2, dir: Vector2) -> void:
 	if not multiplayer.is_server():
 		return
 	# Server validates and broadcasts bullet spawn
-	spawn_bullet_net.rpc(spawn_pos, dir, bullet_damage, bullet_speed, is_piercing, player_id)
+	if current_weapon == "Shotgun":
+		var spread_angles = [-0.15, 0.0, 0.15]
+		for a in spread_angles:
+			spawn_bullet_net.rpc(spawn_pos, dir.rotated(a), bullet_damage, bullet_speed, is_piercing, player_id)
+	else:
+		spawn_bullet_net.rpc(spawn_pos, dir, bullet_damage, bullet_speed, is_piercing, player_id)
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_bullet_net(spawn_pos: Vector2, dir: Vector2, dmg: int, spd: float, pierce: bool, shooter_id: int) -> void:
 	var b = bullet_scene.instantiate()
 	b.global_position = spawn_pos
@@ -221,7 +319,12 @@ func spawn_bullet_net(spawn_pos: Vector2, dir: Vector2, dmg: int, spd: float, pi
 	b.is_piercing = pierce
 	b.shooter_player_id = shooter_id
 	b.set_bullet_color(Color(0.3, 0.85, 1.0) if shooter_id == 1 else Color(1.0, 0.6, 0.2))
-	get_parent().add_child(b)
+	var main = get_parent()
+	if main:
+		main.add_child(b)
+		var shooter_node = main.get_node_or_null("Player%d" % shooter_id) as ScrapboundPlayer
+		if shooter_node and is_instance_valid(shooter_node):
+			shooter_node.weapon_recoil = 6.0
 	
 	if shoot_audio:
 		shoot_audio.pitch_scale = randf_range(0.95, 1.05)
@@ -236,7 +339,7 @@ func take_damage_server(amount: int) -> void:
 	if health <= 0:
 		die_server()
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_health_net(new_hp: int) -> void:
 	health = new_hp
 	if health_bar:
@@ -256,7 +359,7 @@ func die_server() -> void:
 	respawn_timer = death_count * 5.0
 	sync_death_net.rpc(respawn_timer)
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_death_net(duration: float) -> void:
 	is_dead = true
 	respawn_timer = duration
@@ -264,12 +367,9 @@ func sync_death_net(duration: float) -> void:
 	if weapon_pivot: weapon_pivot.visible = false
 	if health_bar: health_bar.visible = false
 	if collision_shape: collision_shape.set_deferred("disabled", true)
-	if not is_multiplayer_authority():
-		hide_character_from_view()
-	else:
-		if respawn_label:
-			respawn_label.visible = true
-			respawn_label.text = "RESPAWN: %ds" % int(ceil(respawn_timer))
+	if respawn_label and is_multiplayer_authority():
+		respawn_label.visible = true
+		respawn_label.text = "RESPAWN: %ds" % int(ceil(respawn_timer))
 	player_died.emit(player_id, respawn_timer)
 
 func _process_respawn_server(delta: float) -> void:
@@ -278,10 +378,10 @@ func _process_respawn_server(delta: float) -> void:
 	if respawn_timer <= 0.0:
 		respawn_server()
 
-@rpc("call_local", "unreliable")
+@rpc("any_peer", "call_local", "unreliable")
 func sync_respawn_timer_net(time_left: float) -> void:
 	respawn_timer = time_left
-	if respawn_label:
+	if respawn_label and is_multiplayer_authority():
 		respawn_label.text = "RESPAWN: %ds" % int(ceil(max(0.0, respawn_timer)))
 
 func respawn_server() -> void:
@@ -290,16 +390,15 @@ func respawn_server() -> void:
 	is_dead = false
 	health = max_health
 	
-	var towers = get_tree().get_nodes_in_group("Towers")
-	var spawn_pos = global_position
-	for t in towers:
-		if is_instance_valid(t) and t.tower_id == player_id:
+	var spawn_pos = Vector2(1408, 1000) if player_id == 1 else Vector2(4224, 1000)
+	var main = get_parent() as ScrapboundMain
+	if main:
+		var t = main.tower1 if player_id == 1 else main.tower2
+		if t and is_instance_valid(t):
 			spawn_pos = t.get_spawn_position()
-			break
-			
 	sync_respawn_net.rpc(spawn_pos)
 
-@rpc("call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_respawn_net(spawn_pos: Vector2) -> void:
 	is_dead = false
 	health = max_health
@@ -307,10 +406,7 @@ func sync_respawn_net(spawn_pos: Vector2) -> void:
 	remote_target_pos = spawn_pos
 	if collision_shape: collision_shape.set_deferred("disabled", false)
 	
-	if not is_multiplayer_authority():
-		hide_character_from_view()
-		return
-	
+	visible = true
 	if health_bar:
 		health_bar.value = health
 		health_bar.visible = true
@@ -334,7 +430,18 @@ func set_weapon(weapon_type: String) -> void:
 		bullet_damage = 60
 		bullet_speed = 460.0
 		is_piercing = true
+	elif weapon_type == "Shotgun":
+		shoot_rate = 0.34
+		bullet_damage = 22
+		bullet_speed = 480.0
+		is_piercing = false
+	elif weapon_type == "PlasmaSniper":
+		shoot_rate = 0.52
+		bullet_damage = 85
+		bullet_speed = 720.0
+		is_piercing = true
 	else:
+		current_weapon = "Basic"
 		shoot_rate = 0.22
 		bullet_damage = 25
 		bullet_speed = 520.0
@@ -342,6 +449,52 @@ func set_weapon(weapon_type: String) -> void:
 	weapon_upgraded.emit(player_id, current_weapon)
 
 func add_resource(res_name: String, amount: int = 1) -> void:
-	if res_name in inventory:
-		inventory[res_name] += amount
+	var key = res_name.to_lower()
+	if key == "garbage":
+		key = "scrap"
+	if key in inventory:
+		inventory[key] += amount
 		inventory_changed.emit(player_id, inventory)
+		_update_scrap_badge()
+
+func on_scrap_collected_feedback(qty: int) -> void:
+	if is_multiplayer_authority():
+		if pickup_audio:
+			pickup_audio.pitch_scale = randf_range(0.95, 1.1)
+			pickup_audio.play()
+		show_floating_text("+%d SCRAP! 🎒" % qty, Color(1.0, 0.9, 0.25))
+	_update_scrap_badge()
+
+func _update_scrap_badge() -> void:
+	if not scrap_badge:
+		return
+	if is_dead:
+		scrap_badge.visible = false
+		return
+		
+	var scrap_count = inventory.get("scrap", 0)
+	if scrap_count <= 0:
+		scrap_badge.visible = false
+	elif scrap_count >= 10:
+		scrap_badge.visible = true
+		scrap_badge.text = "🎒 %d SCRAP ➡ RECYCLER" % scrap_count
+		scrap_badge.modulate = Color(0.3, 1.0, 0.4)
+	else:
+		scrap_badge.visible = true
+		scrap_badge.text = "🎒 %d/10 SCRAP" % scrap_count
+		scrap_badge.modulate = Color(1.0, 0.85, 0.3)
+
+func show_floating_text(msg: String, col: Color = Color.WHITE) -> void:
+	var lbl = Label.new()
+	lbl.text = msg
+	lbl.modulate = col
+	lbl.set("theme_override_font_sizes/font_size", 12)
+	lbl.position = Vector2(-50, -80)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.custom_minimum_size = Vector2(100, 18)
+	add_child(lbl)
+	
+	var tween = create_tween()
+	tween.tween_property(lbl, "position:y", lbl.position.y - 25.0, 0.75).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(lbl, "modulate:a", 0.0, 0.75).set_delay(0.2)
+	tween.tween_callback(lbl.queue_free)
