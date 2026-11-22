@@ -34,10 +34,6 @@ var is_facing_left: bool = false
 var inventory: Dictionary = {
 	"scrap": 0,
 	"battery": 0,
-	"material_a": 0,
-	"material_b": 0,
-	"material_c": 0,
-	"material_d": 0,
 	"wood": 0,
 	"plastic": 0,
 	"iron": 0

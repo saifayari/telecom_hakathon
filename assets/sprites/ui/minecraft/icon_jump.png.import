@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://duy28pbjt4qyf"
-path="res://.godot/imported/preview_compact_tower_night.png-1188cda7c6e5b97d5ee4d41717369280.ctex"
+uid="uid://hh821d71efyq"
+path="res://.godot/imported/icon_jump.png-d7504afec5bc0d029c343ea757211df5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://preview_compact_tower_night.png"
-dest_files=["res://.godot/imported/preview_compact_tower_night.png-1188cda7c6e5b97d5ee4d41717369280.ctex"]
+source_file="res://assets/sprites/ui/minecraft/icon_jump.png"
+dest_files=["res://.godot/imported/icon_jump.png-d7504afec5bc0d029c343ea757211df5.ctex"]
 
 [params]
 

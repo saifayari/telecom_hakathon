@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cnctmtpqqg158"
-path="res://.godot/imported/crop_platform_day.png-71b1221bc797999b78a528ecc69ff4ba.ctex"
+uid="uid://d3lrkurc832n3"
+path="res://.godot/imported/telecom_tower_gemini_p1.png-4a17753164753289647ce656d3caa442.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://crop_platform_day.png"
-dest_files=["res://.godot/imported/crop_platform_day.png-71b1221bc797999b78a528ecc69ff4ba.ctex"]
+source_file="res://assets/sprites/environment/telecom_tower_gemini_p1.png"
+dest_files=["res://.godot/imported/telecom_tower_gemini_p1.png-4a17753164753289647ce656d3caa442.ctex"]
 
 [params]
 

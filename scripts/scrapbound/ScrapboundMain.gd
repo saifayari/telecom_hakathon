@@ -33,9 +33,13 @@ var local_target_player: ScrapboundPlayer = null
 func _ready() -> void:
 	match_timer = match_duration
 	is_match_running = true
+	if hud:
+		hud.update_timer(match_timer)
 	
-	# Dynamically bind user-requested arena background Gemini_Generated_Image_t4395kt4395kt439
-	var map_path = ProjectSettings.globalize_path("res://assets/sprites/environment/map_t4395k.png")
+	# Dynamically bind user-requested urban telecom compound arena background (Gemini_Generated_Image_kxgbg3)
+	var map_path = ProjectSettings.globalize_path("res://assets/sprites/environment/map_kxgbg3.png")
+	if not FileAccess.file_exists(map_path):
+		map_path = ProjectSettings.globalize_path("res://assets/sprites/environment/map_t4395k.png")
 	if FileAccess.file_exists(map_path):
 		var img = Image.new()
 		var err = img.load(map_path)
@@ -45,7 +49,7 @@ func _ready() -> void:
 			if bg1: bg1.texture = tex
 			var bg2 = get_node_or_null("MapEnvironment/ArenaMapBg2") as TextureRect
 			if bg2: bg2.texture = tex
-			print("[SCRAPBOUND MAP] Successfully bound high-res arena map (2816x1536) to both player sectors!")
+			print("[SCRAPBOUND MAP] Successfully bound high-res urban telecom arena map (2816x1536) to both player sectors!")
 	
 	# Determine peer authorities cleanly for host and client
 	var client_peer_id = 1
@@ -104,6 +108,8 @@ func _physics_process(delta: float) -> void:
 	if multiplayer.is_server():
 		match_timer -= delta
 		sync_timer_net.rpc(match_timer)
+		if hud:
+			hud.update_timer(match_timer)
 		
 		if match_timer <= 0.0:
 			end_match_server()
@@ -114,8 +120,13 @@ func _physics_process(delta: float) -> void:
 			spawn_timer = spawn_interval
 			spawn_interval = max(1.8, 3.5 - ((120.0 - match_timer) / 120.0) * 1.5)
 			_spawn_monster_server()
+	else:
+		# Client side smooth countdown fallback between server RPC ticks
+		match_timer = max(0.0, match_timer - delta)
+		if hud:
+			hud.update_timer(match_timer)
 
-@rpc("unreliable")
+@rpc("call_local", "unreliable")
 func sync_timer_net(time_left: float) -> void:
 	match_timer = time_left
 	if hud:

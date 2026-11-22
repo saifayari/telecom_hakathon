@@ -4,113 +4,84 @@ import numpy as np
 from scipy import ndimage
 
 ART = r"art (2)\art\monsters"
+if not os.path.exists(ART):
+    ART = r"assests\monsters"
 OUT = r"FACTORY_RESET-main\assets\sprites\monsters\amalgam"
+OUT_DIR = OUT
 os.makedirs(OUT, exist_ok=True)
 
-def clean_rgba_adaptive(im_crop):
-    arr = np.array(im_crop).astype(float)
-    h, w, _ = arr.shape
-    sat = np.max(arr, axis=2) - np.min(arr, axis=2)
-    val = np.mean(arr, axis=2)
-    
-    border = np.concatenate([arr[0:3,:,:], arr[-3:,:,:], arr[:,0:3,:], arr[:,-3:,:]], axis=None).reshape(-1, 3)
-    b_sat = np.max(border, axis=1) - np.min(border, axis=1)
-    b_val = np.mean(border, axis=1)
-    
-    max_sat = max(28, float(np.percentile(b_sat, 85)) + 8)
-    bg_lo = max(10, float(np.percentile(b_val, 5)) - 15)
-    bg_hi = min(245, float(np.percentile(b_val, 95)) + 15)
-    
-    is_bg = (sat <= max_sat) & (val >= bg_lo) & (val <= bg_hi)
-    border_mask = np.zeros((h, w), dtype=bool)
-    border_mask[0:3, :] = True
-    border_mask[-3:, :] = True
-    border_mask[:, 0:3] = True
-    border_mask[:, -3:] = True
-    seeds = border_mask & is_bg
-    bg_conn = ndimage.binary_propagation(seeds, mask=is_bg)
-    bg_conn = ndimage.binary_dilation(bg_conn, iterations=1)
-    
-    alpha = np.where(bg_conn, 0, 255).astype(np.uint8)
-    rgba = np.dstack([np.array(im_crop), alpha])
-    
-    # Strictly keep the largest connected component
-    mask = alpha > 20
-    lbl, num = ndimage.label(mask)
-    if num > 1:
-        objs = ndimage.find_objects(lbl)
-        largest_idx = 0
-        max_area = 0
-        for idx, o in enumerate(objs):
-            area = (lbl[o] == (idx + 1)).sum()
-            if area > max_area:
-                max_area = area
-                largest_idx = idx + 1
-        clean_alpha = np.where(lbl == largest_idx, alpha, 0).astype(np.uint8)
-        rgba[:, :, 3] = clean_alpha
-        
-    return Image.fromarray(rgba)
-
-def make_uniform(crop_rgba, canvas_size=(128, 128), target_h=96):
-    bbox = crop_rgba.getbbox()
-    if not bbox:
-        return Image.new('RGBA', canvas_size, (0, 0, 0, 0))
-    c = crop_rgba.crop(bbox)
-    scale = target_h / float(c.height)
-    new_w = max(1, int(round(c.width * scale)))
-    new_h = target_h
-    c = c.resize((new_w, new_h), Image.Resampling.LANCZOS)
-    canvas = Image.new('RGBA', canvas_size, (0, 0, 0, 0))
-    paste_x = (canvas_size[0] - new_w) // 2
-    paste_y = canvas_size[1] - 8 - new_h # 8px margin from bottom
-    canvas.paste(c, (paste_x, paste_y), c)
-    return canvas
-
 print("1. Extracting Walk Cycle (6 frames) from puu42epuu42epuu4.jpg...")
-im_walk = Image.open(os.path.join(ART, "Gemini_Generated_Image_puu42epuu42epuu4.jpg"))
-walk_boxes = [
-    (57, 319, 634, 983),
-    (617, 326, 1064, 922),
-    (1168, 322, 1519, 877),
-    (1598, 318, 2029, 876),
-    (2082, 318, 2570, 1050),
-    (2600, 318, 3144, 955)
-]
-for i, box in enumerate(walk_boxes):
-    c = clean_rgba_adaptive(im_walk.crop(box))
-    u = make_uniform(c, canvas_size=(128, 128), target_h=96)
-    out_p = os.path.join(OUT, f"amalgam_walk_{i}.png")
-    u.save(out_p)
-    print(f"Saved: {out_p} ({u.size})")
+im_walk_path = os.path.join(ART, "Gemini_Generated_Image_puu42epuu42epuu4.jpg")
+im = Image.open(im_walk_path)
+arr = np.array(im).astype(float)
 
-print("2. Extracting Attack Cycle (4 frames) from gbfa28gbfa28gbfa.jpg...")
-im_atk = Image.open(os.path.join(ART, "Gemini_Generated_Image_gbfa28gbfa28gbfa.jpg"))
-atk_boxes = [
-    (50, 195, 489, 644),
-    (523, 209, 976, 655),
-    (1019, 228, 1520, 615),
-    (1604, 223, 1987, 647)
-]
-for i, box in enumerate(atk_boxes):
-    c = clean_rgba_adaptive(im_atk.crop(box))
-    u = make_uniform(c, canvas_size=(128, 128), target_h=96)
-    out_p = os.path.join(OUT, f"amalgam_attack_{i}.png")
-    u.save(out_p)
-    print(f"Saved: {out_p} ({u.size})")
+diff_rg = np.abs(arr[:,:,0] - arr[:,:,1])
+diff_gb = np.abs(arr[:,:,1] - arr[:,:,2])
+diff_rb = np.abs(arr[:,:,0] - arr[:,:,2])
+max_diff = np.maximum(diff_rg, np.maximum(diff_gb, diff_rb))
 
-print("3. Extracting Hit frame from gbfa28gbfa28gbfa.jpg...")
-c_hit = clean_rgba_adaptive(im_atk.crop((2049, 227, 2608, 658)))
-u_hit = make_uniform(c_hit, canvas_size=(128, 128), target_h=96)
-out_hit = os.path.join(OUT, "amalgam_hit.png")
-u_hit.save(out_hit)
-print(f"Saved: {out_hit} ({u_hit.size})")
+splits = [0, 512, 1081, 1565, 2069, 2590, 3168]
+CANVAS_SIZE = (128, 128)
+TARGET_H = 96
+BASELINE_Y = 120
+TARGET_CENTER_X = 64
 
-print("4. Extracting Idle frame from mebcbfmebcbfmebc.jpg...")
-im_idle = Image.open(os.path.join(ART, "Gemini_Generated_Image_mebcbfmebcbfmebc.jpg"))
-c_idle = clean_rgba_adaptive(im_idle.crop((725, 236, 2122, 1257)))
-u_idle = make_uniform(c_idle, canvas_size=(128, 128), target_h=96)
-out_idle = os.path.join(OUT, "amalgam_idle.png")
-u_idle.save(out_idle)
-print(f"Saved: {out_idle} ({u_idle.size})")
+raw_frames = []
+for i in range(6):
+    x0, x1 = splits[i], splits[i+1]
+    crop_rgb = arr[230:1120, x0:x1, :].copy()
+    crop_diff = max_diff[230:1120, x0:x1].copy()
+    
+    is_bg_cand = (crop_diff <= 3.5)
+    lbl_bg, num_bg = ndimage.label(is_bg_cand)
+    bg = np.zeros(is_bg_cand.shape, dtype=bool)
+    for b in range(1, num_bg + 1):
+        mask = (lbl_bg == b)
+        if mask.sum() > 1500:
+            bg |= mask
+    bg = ndimage.binary_dilation(bg, iterations=2) & (crop_diff <= 5.5)
+    
+    fg = ~bg
+    lbl, num = ndimage.label(fg)
+    sizes = ndimage.sum(fg, lbl, range(num + 1))
+    fg_clean = (sizes > 1000)[lbl]
+    
+    h_c, w_c, _ = crop_rgb.shape
+    if i == 5:
+        fg_clean[int(h_c*0.8):, int(w_c*0.5):] = False
+        
+    alpha = np.where(fg_clean, 255, 0).astype(np.uint8)
+    rgba = np.dstack([crop_rgb.astype(np.uint8), alpha])
+    pil_rgba = Image.fromarray(rgba)
+    bbox = pil_rgba.getbbox()
+    c_img = pil_rgba.crop(bbox)
+    raw_frames.append((c_img, bbox))
 
-print("SUCCESS: All monster amalgam frames cleaned and standardized to 128x128!")
+heights = [f[0].height for f in raw_frames]
+median_h = float(np.median(heights))
+scale = TARGET_H / median_h
+
+for i, (c_img, bbox) in enumerate(raw_frames):
+    new_w = max(1, int(round(c_img.width * scale)))
+    new_h = max(1, int(round(c_img.height * scale)))
+    resized = c_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+    
+    res_arr = np.array(resized)
+    alpha = res_arr[:, :, 3]
+    torso_alpha = alpha[int(new_h*0.2):int(new_h*0.6), :]
+    col_mass = torso_alpha.sum(axis=0)
+    com_x = (np.arange(new_w) * col_mass).sum() / col_mass.sum() if col_mass.sum() > 0 else new_w / 2.0
+        
+    canvas = Image.new('RGBA', CANVAS_SIZE, (0, 0, 0, 0))
+    paste_x = int(round(TARGET_CENTER_X - com_x))
+    paste_y = int(round(BASELINE_Y - new_h))
+    paste_x = max(0, min(CANVAS_SIZE[0] - new_w, paste_x))
+    paste_y = max(0, min(CANVAS_SIZE[1] - new_h, paste_y))
+    canvas.paste(resized, (paste_x, paste_y), resized)
+    
+    canvas_flipped = canvas.transpose(Image.FLIP_LEFT_RIGHT)
+    out_path = os.path.join(OUT_DIR, f'amalgam_walk_{i}.png')
+    canvas_flipped.save(out_path)
+    print(f"Saved: {out_path} ({canvas_flipped.size})")
+
+print("SUCCESS: All 6 Unit-R17 walk frames extracted with uniform scale, torso centering, and baseline alignment.")

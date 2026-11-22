@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d34dm7kao8j3n"
-path="res://.godot/imported/preview_compact_tower_day.png-84569c59712c862b269307a38abc73de.ctex"
+uid="uid://h6nvw0mdfgh8"
+path="res://.godot/imported/telecom_defense_tower_dq2l_p2.png-05f53ff48857e2cdf62b2335bf188432.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://preview_compact_tower_day.png"
-dest_files=["res://.godot/imported/preview_compact_tower_day.png-84569c59712c862b269307a38abc73de.ctex"]
+source_file="res://assets/sprites/turrets/telecom_defense_tower_dq2l_p2.png"
+dest_files=["res://.godot/imported/telecom_defense_tower_dq2l_p2.png-05f53ff48857e2cdf62b2335bf188432.ctex"]
 
 [params]
 

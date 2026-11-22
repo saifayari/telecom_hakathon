@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://defensetower_scrapbound01"]
+[gd_scene load_steps=6 format=3 uid="uid://defensetower_scrapbound01"]
 
 [ext_resource type="Script" path="res://scripts/scrapbound/DefenseTower.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/sprites/environment/turret_mount_pad_night.png" id="2_base"]
-[ext_resource type="Texture2D" path="res://assets/sprites/turrets/scrap_sentry.png" id="3_gun"]
+[ext_resource type="Texture2D" path="res://assets/sprites/turrets/telecom_defense_tower_dq2l_p1.png" id="3_gun"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/sentry_shoot.wav" id="4_sfx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
@@ -23,8 +23,8 @@ texture = ExtResource("2_base")
 [node name="TurretPivot" type="Node2D" parent="."]
 
 [node name="GunSprite" type="Sprite2D" parent="TurretPivot"]
-position = Vector2(0, 0)
-scale = Vector2(0.42, 0.42)
+position = Vector2(0, -15)
+scale = Vector2(0.22, 0.22)
 texture = ExtResource("3_gun")
 
 [node name="Muzzle" type="Marker2D" parent="TurretPivot"]

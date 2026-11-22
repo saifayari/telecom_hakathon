@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buet4hf4iedkk"
-path="res://.godot/imported/cropped_raw_tower.png-95f7a2371a13d1b1771380ba5969b7c5.ctex"
+uid="uid://bhrpmyt7elf5c"
+path="res://.godot/imported/bg_factory_interior.jpg-833f772881d2cbae16bfeb530ad0b0fe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://cropped_raw_tower.png"
-dest_files=["res://.godot/imported/cropped_raw_tower.png-95f7a2371a13d1b1771380ba5969b7c5.ctex"]
+source_file="res://assets/scrapfall/bg_factory_interior.jpg"
+dest_files=["res://.godot/imported/bg_factory_interior.jpg-833f772881d2cbae16bfeb530ad0b0fe.ctex"]
 
 [params]
 

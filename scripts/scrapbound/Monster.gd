@@ -65,15 +65,32 @@ func _physics_process_server(delta: float) -> void:
 	var dist = dir.length()
 	
 	if dist > attack_range:
-		velocity = dir.normalized() * speed
+		var desired_dir = dir.normalized()
+		# Obstacle avoidance: if bumping into cars or barricades, glide along tangent
+		if is_on_wall():
+			var normal = get_wall_normal()
+			var tangent = Vector2(-normal.y, normal.x)
+			if tangent.dot(dir) < 0.0:
+				tangent = -tangent
+			elif abs(tangent.dot(dir)) < 0.05:
+				tangent = Vector2(0, 1) if target_position.y >= global_position.y else Vector2(0, -1)
+			desired_dir = (tangent * 0.82 + desired_dir * 0.18).normalized()
+
+		velocity = desired_dir * speed
 		if anim_sprite and anim_sprite.animation != "walk":
 			anim_sprite.play("walk")
 		if anim_sprite:
-			anim_sprite.flip_h = velocity.x < 0
+			if velocity.x < -1.0:
+				anim_sprite.flip_h = true
+			elif velocity.x > 1.0:
+				anim_sprite.flip_h = false
 	else:
 		velocity = Vector2.ZERO
 		if anim_sprite:
-			anim_sprite.flip_h = dir.x < 0
+			if dir.x < -1.0:
+				anim_sprite.flip_h = true
+			elif dir.x > 1.0:
+				anim_sprite.flip_h = false
 		if attack_timer <= 0.0:
 			_start_attack_server()
 		elif anim_sprite and anim_sprite.animation != "idle" and anim_sprite.animation != "attack":
@@ -90,7 +107,10 @@ func _physics_process_server(delta: float) -> void:
 func _physics_process_client(delta: float) -> void:
 	if is_dead:
 		return
-	if global_position.distance_to(remote_pos) > 1.0:
+	var d = global_position.distance_to(remote_pos)
+	if d > 200.0:
+		global_position = remote_pos
+	elif d > 0.5:
 		global_position = global_position.lerp(remote_pos, delta * 15.0)
 
 @rpc("any_peer", "unreliable_ordered")

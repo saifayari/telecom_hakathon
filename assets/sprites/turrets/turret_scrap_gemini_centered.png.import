@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bg7c8afttc1d5"
-path="res://.godot/imported/test_compact_tower_night.png-6ebb1ece553a5135c3eb643bfd7e716c.ctex"
+uid="uid://2k2m0s1apqx0"
+path="res://.godot/imported/turret_scrap_gemini_centered.png-abe996b24fedd14c45097c7085939e23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://test_compact_tower_night.png"
-dest_files=["res://.godot/imported/test_compact_tower_night.png-6ebb1ece553a5135c3eb643bfd7e716c.ctex"]
+source_file="res://assets/sprites/turrets/turret_scrap_gemini_centered.png"
+dest_files=["res://.godot/imported/turret_scrap_gemini_centered.png-abe996b24fedd14c45097c7085939e23.ctex"]
 
 [params]
 

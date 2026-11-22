@@ -29,12 +29,14 @@ func _ready() -> void:
 		health_bar.max_value = max_health
 		health_bar.value = health
 		
-	# Dynamically bind Gemini high-detail heavy turret asset
-	var turret_tex_path = ProjectSettings.globalize_path("res://assets/sprites/turrets/turret_heavy_gemini_centered.png")
-	if FileAccess.file_exists(turret_tex_path) and gun_sprite:
-		var img = Image.new()
-		if img.load(turret_tex_path) == OK:
-			gun_sprite.texture = ImageTexture.create_from_image(img)
+	# Dynamically bind Gemini high-detail telecom defense tower asset
+	var dq2l_turret_path = "res://assets/sprites/turrets/telecom_defense_tower_dq2l_p1.png" if builder_player_id == 1 else "res://assets/sprites/turrets/telecom_defense_tower_dq2l_p2.png"
+	if ResourceLoader.exists(dq2l_turret_path) and gun_sprite:
+		gun_sprite.texture = load(dq2l_turret_path)
+		gun_sprite.position = Vector2(0, -12)
+		gun_sprite.scale = Vector2(0.22, 0.22)
+	elif gun_sprite and ResourceLoader.exists("res://assets/sprites/turrets/turret_heavy_gemini_centered.png"):
+		gun_sprite.texture = load("res://assets/sprites/turrets/turret_heavy_gemini_centered.png")
 			
 	_update_team_visuals()
 
@@ -45,13 +47,16 @@ func setup(p_id: int) -> void:
 func _update_team_visuals() -> void:
 	if not label: return
 	if builder_player_id == 1:
-		label.text = "P1 HEAVY TURRET"
+		label.text = "P1 DEFENSE TOWER"
 		label.modulate = Color(0.2, 0.85, 1.0)
-		if gun_sprite: gun_sprite.modulate = Color(0.85, 1.0, 1.1)
+		if gun_sprite: gun_sprite.modulate = Color.WHITE
 	else:
-		label.text = "P2 HEAVY TURRET"
+		label.text = "P2 DEFENSE TOWER"
 		label.modulate = Color(1.0, 0.65, 0.2)
-		if gun_sprite: gun_sprite.modulate = Color(1.1, 0.9, 0.75)
+		if gun_sprite: gun_sprite.modulate = Color.WHITE
+
+func _process(_delta: float) -> void:
+	pass
 
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server():
